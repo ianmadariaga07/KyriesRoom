@@ -1,0 +1,15 @@
+### Variable Global
+@api = http://localhost:3000/api
+
+###crear un Usuario (POST)
+POST {{api}}/users
+Content-Type: application/json
+
+{
+  "fullName": "Ian WebStorm",
+  "email": "ian_ide@nexus.com",
+  "password": "passwordSeguro123"
+}
+
+###obtener todos los usuarios (GET)
+GET {{api}}/users
