@@ -1,2 +1,10 @@
+@layer tailwind-base, primeng, tailwind-utilities;
 @import "tailwindcss";
 @tailwind utilities;
+
+/*si se necesitan estilos globales extra, se usa la capa base*/
+@layer tailwind-base {
+  body {
+    @apply bg-slate-50; /* Un fondo suave para toda la app */
+  }
+}

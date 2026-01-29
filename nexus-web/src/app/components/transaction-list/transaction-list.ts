@@ -3,11 +3,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Transaction} from '../../interfaces/transaction.interface';
 import { TransactionService} from '../../services/transaction';
 import { TableModule} from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+
+import {CurrencyPipe, DatePipe} from '@angular/common';
+import {PrimeNG} from 'primeng/config';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
-  imports: [TableModule],
+  imports: [TableModule, DatePipe, CurrencyPipe, ButtonModule],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
 })
@@ -15,9 +19,10 @@ import { TableModule} from 'primeng/table';
 export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
 
-  constructor(private transactionService: TransactionService, private router: Router) { }
+  constructor(private transactionService: TransactionService, private router: Router, private primeng: PrimeNG) { }
 
   ngOnInit() {
+    this.primeng.ripple.set(true);
     this.transactionService.getAllTransactions().subscribe({
         next:(data: Transaction[]) => {
           this.transactions.set(data);
