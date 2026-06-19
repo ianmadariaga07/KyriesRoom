@@ -5,8 +5,8 @@
       K
     </div>
     <div>
-      <h1 class="text-on-surface font-bold" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 24px;">KyriesRoom</h1>
-      <p class="text-on-surface-variant text-xs">Gestión Patrimonial</p>
+      <h1 class="text-on-surface font-bold" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 24px;">KYRIESROOM</h1>
+      <p class="text-on-surface-variant text-xs">PAGINA PERSONAL</p>
     </div>
   </div>
   <ul class="flex flex-col gap-2 flex-grow">
@@ -121,56 +121,77 @@
           <p class="text-xs text-on-surface-variant mt-1">Disponible</p>
         </div>
         <div class="relative z-10 mt-6 w-full bg-surface-variant rounded h-1.5 overflow-hidden">
-          <div class="bg-secondary h-1.5 rounded shadow-[0_0_10px_rgba(0,255,255,0.5)]" style="width: 74%"></div>
+          <div class="bg-secondary h-1.5 rounded shadow-[0_0_10px_rgba(0,255,255,0.5)]" style="width: 77%"></div>
         </div>
       </div>
     </div>
 
-    <!-- Movimientos Recientes Table (HTML estático por ahora) -->
+    <!-- Movimientos Recientes Table -->
     <div class="bg-surface rounded-xl shadow-sm border border-outline-variant overflow-hidden mt-8">
       <div class="p-6 border-b border-outline-variant flex justify-between items-center">
         <h3 class="text-xl text-on-surface font-bold" style="font-family: 'Hanken Grotesk', sans-serif;">Movimientos Recientes</h3>
         <button class="text-sm text-primary hover:text-primary/80 transition-colors">Ver todos</button>
       </div>
+
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-          <tr class="bg-surface-bright border-b border-outline-variant">
-            <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Fecha</th>
-            <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Concepto</th>
-            <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Categoría</th>
-            <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider text-right">Monto</th>
-          </tr>
-          </thead>
-          <tbody class="divide-y divide-outline-variant">
-          <tr class="hover:bg-surface-variant transition-colors group">
-            <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">Hoy, 10:45 AM</td>
-            <td class="px-6 py-4">
-              <p class="text-sm text-on-surface">Supermercado Local</p>
-              <p class="text-xs text-on-surface-variant">Alimentación</p>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-surface-variant text-on-surface-variant border border-outline-variant">
-                    Débito
-                </span>
-            </td>
-            <td class="px-6 py-4 text-on-surface font-semibold text-right">-$125.40</td>
-          </tr>
-          <tr class="hover:bg-surface-variant transition-colors group">
-            <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">Ayer</td>
-            <td class="px-6 py-4">
-              <p class="text-sm text-on-surface">Amazon AWS</p>
-              <p class="text-xs text-on-surface-variant">Servicios Digitales</p>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-primary-container text-on-primary-container border border-primary/20">
+        <p-table [value]="transactions()" class="w-full text-left border-collapse">
+          <!-- thead -->
+          <ng-template #header>
+            <tr class="bg-surface-bright border-b border-outline-variant">
+              <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Fecha</th>
+              <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Concepto</th>
+              <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Categoría</th>
+              <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider text-right">Monto</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-tx>
+            <tr class="hover:bg-surface-variant transition-colors group border-b border-outline-variant/50">
+
+              <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">{{ tx.transactionDate | date}}</td>
+
+              <td class="px-6 py-4">
+                <p class="text-sm text-on-surface">{{ tx.concept }}</p>
+                <!-- <p class="text-xs text-on-surface-variant">{{ tx.TransactionType }}</p> -->
+              </td>
+
+              <td class="px-6 py-4 whitespace-nowrap">
+                @if (tx.type === TransactionType.EXPENSE && tx.isCreditCard) {
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-primary-container text-on-primary-container border border-primary/20">
                     Tarjeta Azul
-                </span>
-            </td>
-            <td class="px-6 py-4 text-on-surface font-semibold text-right">-$45.00</td>
-          </tr>
-          </tbody>
-        </table>
+                  </span>
+                } @else if (tx.type === TransactionType.EXPENSE && !tx.isCreditCard) {
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-surface-variant text-on-surface-variant border border-outline-variant">
+                    Débito
+                  </span>
+                } @else if (tx.type === TransactionType.INCOME) {
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-surface-variant text-on-surface-variant border border-outline-variant">
+                    Ingreso
+                  </span>
+                } @else {
+                  <!-- El caso que sobra es TransactionType.PAYMENT -->
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs bg-surface-variant text-on-surface-variant border border-outline-variant">
+                    Pago a Tarjeta
+                  </span>
+                }
+              </td>
+              <td class="px-6 py-4 font-semibold text-right">
+                @if(tx.type === TransactionType.INCOME){
+                  <span class="text-secondary drop-shadow-[0_0_8px_rgba(0,255,255,0.4)]">
+                    {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | currency:'MXN' }}
+                  </span>
+                }@else if(tx.type === TransactionType.EXPENSE){
+                  <span class="text-on-surface">
+                    {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | currency:'MXN' }}
+                  </span>
+                }@else{
+                  <span class="text-primary">
+                    {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | currency:'MXN' }}
+                  </span>
+                }
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
 

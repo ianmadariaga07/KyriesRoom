@@ -1,17 +1,16 @@
-import { Component, OnInit, signal, inject} from '@angular/core';
+import { Component, OnInit, signal} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router} from '@angular/router';
-import { Transaction} from '../../interfaces/transaction.interface';
+import { Transaction, TransactionType} from '../../interfaces/transaction.interface';
 import { TransactionService} from '../../services/transaction';
 
-import {Card} from 'primeng/card';
-import {Table, TableModule} from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
+import {TableModule} from 'primeng/table';
 import {PrimeNG} from 'primeng/config';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
-  imports: [TableModule, ButtonModule],
+  imports: [CommonModule, TableModule],
   providers: [],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
@@ -27,11 +26,14 @@ export class TransactionList implements OnInit {
     this.transactionService.getAllTransactions().subscribe({
         next:(data: Transaction[]) => {
           this.transactions.set(data);
+          //VAMOS A QUITAR MAS ADELANTE LOS CONSOLE.LOG, PUES ESTOS NO SON RECOMENDABLES DE UTILIZAR EN PRODUCCION
           console.log(this.transactions);
         }, error: (error) => {
-        console.error('Error:', error);
+          console.error('Error:', error);
         }
       }
     )
   }
+
+  protected readonly TransactionType = TransactionType;
 }
