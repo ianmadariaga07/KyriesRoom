@@ -1,10 +1,48 @@
-@layer tailwind-base, primeng, tailwind-utilities;
 @import "tailwindcss";
-@tailwind utilities;
 
-/*si se necesitan estilos globales extra, se usa la capa base*/
-@layer tailwind-base {
+@theme {
+  /* Colores de Stitch */
+  --color-background: #09090b;
+  --color-surface: #121214;
+  --color-surface-variant: #1e1e24;
+  --color-surface-bright: #18181b;
+  --color-primary: #FF004D;
+  --color-on-primary: #ffffff;
+  --color-primary-container: rgba(255, 0, 77, 0.15);
+  --color-on-primary-container: #FF004D;
+  --color-secondary: #00FFFF;
+  --color-on-secondary: #000000;
+  --color-secondary-container: rgba(0, 255, 255, 0.15);
+  --color-on-secondary-container: #00FFFF;
+  --color-on-surface: #fafafa;
+  --color-on-surface-variant: #a1a1aa;
+  --color-outline: #3f3f46;
+  --color-outline-variant: #27272a;
+
+  /* Espaciados de Stitch */
+  --spacing-margin-desktop: 2.5rem;
+  --spacing-stack-lg: 2rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-container-max: 1440px;
+  --spacing-stack-sm: 0.5rem;
+  --spacing-stack-md: 1rem;
+  --spacing-margin-mobile: 1rem;
+}
+
+@layer base {
   body {
-    @apply bg-slate-50; /* Un fondo suave para toda la app */
+    @apply bg-background text-on-surface min-h-screen;
+    font-family: 'Inter', sans-serif;
+    /* El fondo de puntitos */
+    background-image: radial-gradient(rgba(161, 161, 170, 0.5) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+
+  /* Clases para los iconos de Google */
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
 }

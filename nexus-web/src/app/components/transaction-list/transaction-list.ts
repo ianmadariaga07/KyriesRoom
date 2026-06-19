@@ -1,17 +1,18 @@
-import { Component, OnInit, signal} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, signal, inject} from '@angular/core';
+import { Router} from '@angular/router';
 import { Transaction} from '../../interfaces/transaction.interface';
 import { TransactionService} from '../../services/transaction';
-import { TableModule} from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 
-import {CurrencyPipe, DatePipe} from '@angular/common';
+import {Card} from 'primeng/card';
+import {Table, TableModule} from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 import {PrimeNG} from 'primeng/config';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
-  imports: [TableModule, DatePipe, CurrencyPipe, ButtonModule],
+  imports: [TableModule, ButtonModule],
+  providers: [],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
 })
