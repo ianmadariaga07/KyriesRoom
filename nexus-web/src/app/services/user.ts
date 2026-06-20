@@ -1,0 +1,16 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {User} from '../interfaces/user.interface';
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class UserService {
+  private apiUrl: string = "http://localhost:3000/api/users";
+  constructor(private http: HttpClient) { }
+
+  getAllUsers(){
+    return this.http.get<User[]>(this.apiUrl)
+  }
+}

@@ -30,7 +30,9 @@ export class UsersService {
       return user;
     } catch (error) {
       //código 23505 = Unique Violation, correo duplicado en Postgres
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (error.code === '23505') {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         throw new BadRequestException(error.detail);
       }
       this.logger.error(error);

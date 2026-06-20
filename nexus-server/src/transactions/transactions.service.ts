@@ -57,7 +57,10 @@ export class TransactionsService {
   }
 
   findAll() {
-    return this.transactionRepository.find();
+    //Hacemos el JOIN con la tabla users {relations: ['user'], // Esto hace un JOIN con la tabla users}
+    return this.transactionRepository.find({
+      relations: ['user'],
+    });
   }
 
   async findOne(id: string) {
