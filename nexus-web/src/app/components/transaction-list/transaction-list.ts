@@ -8,11 +8,19 @@ import { UserService} from '../../services/user';
 
 import {TableModule} from 'primeng/table';
 import {PrimeNG} from 'primeng/config';
+import { DialogModule } from 'primeng/dialog';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
-  imports: [CommonModule, TableModule],
+  imports: [
+    CommonModule, TableModule, DialogModule, FormsModule, AutoCompleteModule,
+    SelectModule, DatePickerModule
+  ],
   providers: [],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
@@ -21,6 +29,7 @@ import {PrimeNG} from 'primeng/config';
 export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<User[]>([]);
+  public isTransactionVisible = signal<boolean>(false);
 
   constructor(
     private transactionService: TransactionService, private router: Router, private primeng: PrimeNG, private userService: UserService,
