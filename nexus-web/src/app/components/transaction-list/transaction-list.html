@@ -285,7 +285,7 @@
         </div>
 
         <!-- Form Layout -->
-        <form class="space-y-6 relative z-10">
+        <form class="space-y-6 relative z-10" [formGroup]="transactionForm">
 
           <!-- Top Row: Amount & Method -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -294,7 +294,7 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Monto Total</label>
               <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white font-bold text-xl">$</span>
-                <input class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors" placeholder="0.00" step="0.01" type="number"/>
+                <input formControlName="amount" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors" placeholder="0.00" step="0.01" type="number"/>
               </div>
             </div>
 
@@ -303,7 +303,7 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Tipo de Transacción</label>
               <div class="grid grid-cols-3 gap-2 h-[52px]">
                 <label class="cursor-pointer relative">
-                  <input class="peer sr-only" name="tx_type" type="radio" value="income"/>
+                  <input formControlName="type" class="peer sr-only" name="type" type="radio" value="income"/>
                   <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary-container rounded flex items-center justify-center transition-all hover:bg-surface">
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-on-surface-variant peer-checked:text-secondary text-sm mb-0.5">trending_up</span>
@@ -312,7 +312,7 @@
                   </div>
                 </label>
                 <label class="cursor-pointer relative">
-                  <input checked="" class="peer sr-only" name="tx_type" type="radio" value="expense"/>
+                  <input formControlName="type" checked="" class="peer sr-only" name="type" type="radio" value="expense"/>
                   <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-primary peer-checked:bg-primary-container/20 rounded flex items-center justify-center transition-all hover:bg-surface">
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-on-surface-variant peer-checked:text-primary text-sm mb-0.5">trending_down</span>
@@ -321,7 +321,7 @@
                   </div>
                 </label>
                 <label class="cursor-pointer relative">
-                  <input class="peer sr-only" name="tx_type" type="radio" value="payment"/>
+                  <input formControlName="type" class="peer sr-only" name="type" type="radio" value="payment"/>
                   <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-primary peer-checked:bg-primary-container/20 rounded flex items-center justify-center transition-all hover:bg-surface">
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-on-surface-variant peer-checked:text-primary text-sm mb-0.5">account_balance_wallet</span>
@@ -340,6 +340,7 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Responsable</label>
               <div class="relative">
                 <p-select
+                  formControlName="userId"
                   [options]="subAccounts()"
                   optionLabel="fullName"
                   optionValue="id"
@@ -348,10 +349,10 @@
                   class="w-full bg-surface-bright border border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-surface outline-none rounded text-sm text-white h-[42px] transition-colors items-center shadow-sm"
                   panelStyleClass="bg-surface-variant border border-outline-variant shadow-2xl rounded-md overflow-hidden mt-1"
                   [pt]="{
-                  label: { class: 'pl-4 text-on-surface' },
-                  dropdown: { class: 'pr-3 text-on-surface-variant' },
-                  option: { class: 'px-4 py-2 text-sm text-on-surface hover:bg-primary/20 hover:text-primary data-[p-highlight=true]:!bg-secondary/20 data-[p-highlight=true]:!text-secondary transition-colors cursor-pointer' }
-                }">
+                    label: { class: 'pl-4 text-on-surface' },
+                    dropdown: { class: 'pr-3 text-on-surface-variant' },
+                    option: { class: 'px-4 py-2 text-sm text-on-surface hover:bg-primary/20 hover:text-primary data-[p-highlight=true]:!bg-secondary/20 data-[p-highlight=true]:!text-secondary transition-colors cursor-pointer' }
+                 }">
                 </p-select>
               </div>
             </div>
@@ -360,16 +361,17 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Método</label>
               <div class="grid grid-cols-2 gap-2 h-[42px]">
                 <label class="cursor-pointer relative">
-                  <input class="peer sr-only" name="payment_method" type="radio" value="credito"/>
-                  <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary-container rounded flex items-center justify-center transition-all">
+                  <input formControlName="method" class="peer sr-only" type="radio" value="debito"/>
+                  <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary-container rounded flex items-center justify-center transition-all hover:bg-surface">
                     <span class="text-xs text-on-surface-variant peer-checked:text-white font-semibold flex items-center gap-1">
                       <span class="material-symbols-outlined text-sm peer-checked:text-secondary">credit_card</span> DÉBITO
                     </span>
                   </div>
                 </label>
-                <label class="cursor-pointer relative">
-                  <input checked="" class="peer sr-only" name="payment_method" type="radio" value="debito"/>
-                  <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-primary peer-checked:bg-primary-container/20 rounded flex items-center justify-center transition-all">
+                <label class="cursor-pointer relative"
+                  [ngClass]="transactionForm.get('type')?.value !== 'expense' ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer'">
+                  <input formControlName="method" class="peer sr-only" type="radio" value="credito"/>
+                  <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-primary peer-checked:bg-primary-container/20 rounded flex items-center justify-center transition-all hover:bg-surface">
                     <span class="text-xs text-on-surface-variant peer-checked:text-white font-semibold flex items-center gap-1">
                       <span class="material-symbols-outlined text-sm peer-checked:text-primary">credit_card_heart</span> CRÉDITO
                     </span>
@@ -381,7 +383,7 @@
             <!-- Concepto -->
             <div class="space-y-2">
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Concepto / Título</label>
-              <input class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant transition-colors" placeholder="Ej: Compra Supermercado" type="text"/>
+              <input formControlName="concept" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant transition-colors" placeholder="Ej: Compra Supermercado" type="text"/>
             </div>
           </div>
 
@@ -392,12 +394,13 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Fecha de Operación</label>
               <div class="relative">
                 <p-datePicker
+                  formControlName="date"
                   [showIcon]="true"
                   placeholder="mm / dd / yyyy"
                   dateFormat="mm / dd / yy"
                   appendTo="body"
                   class="w-full h-[42px]"
-                  inputStyleClass="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded-l text-sm text-white px-4 h-full transition-colors"
+                  inputStyleClass="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 h-full transition-colors"
                   panelStyleClass="bg-surface-variant border border-outline-variant text-white shadow-2xl rounded-xl !z-[10000]">
                 </p-datePicker>
               </div>
@@ -421,15 +424,15 @@
                 <span class="text-outline-variant lowercase font-normal">(opcional)</span>
               </label>
             </div>
-            <textarea class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant  resize-y transition-colors" placeholder="Añadir notas, referencias o tags..." rows="2"></textarea>
+            <textarea formControlName="description" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant  resize-y transition-colors" placeholder="Añadir notas, referencias o tags..." rows="2"></textarea>
           </div>
 
           <!-- Actions -->
           <div class="flex justify-end gap-4 pt-4">
-            <button (click)="isTransactionVisible.set(false)" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold" type="button">
+            <button type="button" (click)="isTransactionVisible.set(false)" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold">
               Cancelar
             </button>
-            <button class="px-8 py-2 rounded bg-transparent border border-primary text-primary text-sm tracking-widest hover:bg-primary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(255,0,77,0.1)] uppercase font-bold" type="button">
+            <button type="submit" (click)="onSubmit()" [disabled]="transactionForm.invalid" class="px-8 py-2 rounded bg-transparent border border-primary text-primary text-sm tracking-widest hover:bg-primary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(255,0,77,0.1)] uppercase font-bold">
               <span class="material-symbols-outlined text-sm">save</span>
               Confirmar_TX
             </button>
