@@ -171,7 +171,14 @@
       </div>
 
       <div class="overflow-x-auto">
-        <p-table [value]="transactions()" class="w-full text-left border-collapse">
+
+        <p-table [value]="transactions()"
+                 class="w-full text-left border-collapse"
+                 [paginator]="true"
+                 [rows]="5"
+                 [showCurrentPageReport]="true"
+                 [defaultSortOrder]=""
+                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} movimientos">
           <!-- thead -->
           <ng-template #header>
             <tr class="bg-surface-bright border-b border-outline-variant">
@@ -294,7 +301,14 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Monto Total</label>
               <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white font-bold text-xl">$</span>
-                <input formControlName="amount" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors" placeholder="0.00" step="0.01" type="number"/>
+                <input formControlName="amount"
+                       class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors"
+                       placeholder="0.00"
+                       step="0.01"
+                       type="number"
+                       min="0"
+                       (keydown)="onMontoKeyPress($event)"
+                />
               </div>
             </div>
 
@@ -349,9 +363,9 @@
                   class="w-full bg-surface-bright border border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-surface outline-none rounded text-sm text-white h-[42px] transition-colors items-center shadow-sm"
                   panelStyleClass="bg-surface-variant border border-outline-variant shadow-2xl rounded-md overflow-hidden mt-1"
                   [pt]="{
-                    label: { class: 'pl-4 text-on-surface' },
+                    label: { class: 'pl-4 text-on-surface'},
                     dropdown: { class: 'pr-3 text-on-surface-variant' },
-                    option: { class: 'px-4 py-2 text-sm text-on-surface hover:bg-primary/20 hover:text-primary data-[p-highlight=true]:!bg-secondary/20 data-[p-highlight=true]:!text-secondary transition-colors cursor-pointer' }
+                    option: { class: 'uppercase px-4 py-2 text-sm text-on-surface hover:bg-primary/20 hover:text-primary data-[p-highlight=true]:!bg-secondary/20 data-[p-highlight=true]:!text-secondary transition-colors cursor-pointer' }
                  }">
                 </p-select>
               </div>
@@ -432,14 +446,43 @@
             <button type="button" (click)="isTransactionVisible.set(false)" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold">
               Cancelar
             </button>
-            <button type="submit" (click)="onSubmit()" [disabled]="transactionForm.invalid" class="px-8 py-2 rounded bg-transparent border border-primary text-primary text-sm tracking-widest hover:bg-primary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(255,0,77,0.1)] uppercase font-bold">
+            <button type="submit" (click)="onSubmit()" class="px-8 py-2 rounded bg-transparent border border-primary text-primary text-sm tracking-widest hover:bg-primary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(255,0,77,0.1)] uppercase font-bold">
               <span class="material-symbols-outlined text-sm">save</span>
               Confirmar_TX
             </button>
           </div>
-
         </form>
       </div>
     </div>
   </p-dialog>
+  <!---->
+  <p-toast position="top-right" [pt]="{
+             root: { class: '!z-[100000]' },
+             message: { class: '!bg-transparent !shadow-none !border-none !p-0 !m-0' }
+           }">
+    <ng-template pTemplate="headless" let-message let-closeFn="closeFn">
+      <div class="flex items-start gap-4 p-4 pt-6 pb-6 mb-4 rounded-sm shadow-lg border border-l-5 bg-surface w-full md:w-96 relative overflow-hidden font-mono uppercase tracking-widest"
+           [ngClass]="{
+              'border-l-secondary border-cyan-400 shadow-cyan-800': message.severity === 'success',
+              'border-l-primary border-red-900 shadow-red-900': message.severity === 'error',
+              'border-l-yellow-500 border-yellow-700 shadow-yellow-900': message.severity === 'warn'
+           }">
+        <span class="material-symbols-outlined filled text-2xl m-2"
+              [ngClass]="{
+                 'text-secondary': message.severity === 'success',
+                 'text-primary': message.severity === 'error',
+                 'text-yellow-500': message.severity === 'warn'
+              }">
+          {{ message.severity === 'success' ? 'check_circle' : message.severity === 'error' ? 'error' : 'warning' }}
+        </span>
+        <div class="flex flex-col gap-1 flex-1">
+          <span class="font-bold text-on-surface text-sm tracking-wide">{{ message.summary }}</span>
+          <span class="text-xs text-on-surface-variant">{{ message.detail }}</span>
+        </div>
+        <button (click)="closeFn()" class="text-on-surface-variant hover:text-white transition-colors p-1 rounded-full hover:bg-surface-variant flex items-center justify-center w-6 h-6 outline-none ml-auto">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+    </ng-template>
+  </p-toast>
 </main>

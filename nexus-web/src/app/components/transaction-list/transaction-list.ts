@@ -12,24 +12,31 @@ import { PrimeNG } from 'primeng/config';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import {Toast, ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import {Button} from 'primeng/button';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
   imports: [
-    CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule
+    CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
+    ToastModule, Button, Ripple
   ],
-  providers: [],
+  providers: [MessageService],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
 })
 
+//C L A S E
 export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<User[]>([]);
   public isTransactionVisible = signal<boolean>(false);
 
   private fb = inject(FormBuilder);
+  private messageService = inject(MessageService);
   protected readonly TransactionType = TransactionType;
 
   constructor(
@@ -111,14 +118,17 @@ export class TransactionList implements OnInit {
               method: 'debito',
               date: new Date()
           });
+          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
         }, error: (err) => {
           //BORRAR CONSOLE.LOG PARA PRODUCCION
           console.error('Error al guardar en NestJS:', err);
+          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
         }
       });
     } else {
       //BORRAR CONSOLE.LOG PARA PRODUCCION
       console.warn("Formulario inválido, abortando envío.");
+      this.messageService.add({ severity: 'warn', summary: 'Error de Validacion', detail: 'Campos requeridos faltantes' });
     }
   }
 
@@ -156,4 +166,22 @@ export class TransactionList implements OnInit {
       }
     })
   }
+
+  public onMontoKeyPress(event: KeyboardEvent) {
+    if (event.key.length > 1 || event.ctrlKey || event.metaKey) {
+      return;
+    }
+    const allowedChars = /[0-9\.]/;
+    if (!allowedChars.test(event.key)) {
+      event.preventDefault();
+    }
+    if (event.key === '.') {
+      const currentValue = (event.target as HTMLInputElement).value;
+      if (currentValue.includes('.')) {
+        event.preventDefault();
+      }
+    }
+  }
+
+  protected readonly TransactionService = TransactionService;
 }
