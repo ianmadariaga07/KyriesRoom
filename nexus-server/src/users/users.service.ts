@@ -56,9 +56,13 @@ export class UsersService {
   }
 
   //METODO UPDATE
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+    //combina los datos actuales con los nuevos
+    const updatedUser = Object.assign(user, updateUserDto);
+    return await this.userRepository.save(updatedUser);
   }
+
   //METODO DELETE
   remove(id: string) {
     return `This action removes a #${id} user`;

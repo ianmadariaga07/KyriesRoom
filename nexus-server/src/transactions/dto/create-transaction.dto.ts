@@ -32,5 +32,5 @@ export class CreateTransactionDto {
   transactionDate: string;
   @IsUUID()
   @IsString()
-  userId: string;
+  subAccountId: string;
 }
