@@ -13,4 +13,8 @@ export class UserService {
   getAllUsers(){
     return this.http.get<User[]>(this.apiUrl)
   }
+
+  createUser(newUser: User) {
+    return this.http.post<User>(this.apiUrl, newUser);
+  }
 }

@@ -6,6 +6,7 @@ import { Transaction, TransactionType} from '../../interfaces/transaction.interf
 import { TransactionService} from '../../services/transaction';
 import { User } from '../../interfaces/user.interface';
 import { UserService} from '../../services/user';
+import { UserFormModalComponent } from '../user-form-modal/user-form-modal';
 
 import { TableModule } from 'primeng/table';
 import { PrimeNG } from 'primeng/config';
@@ -22,7 +23,7 @@ import {Ripple} from 'primeng/ripple';
   standalone: true, //por default ya es true
   imports: [
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
-    ToastModule, Button, Ripple
+    ToastModule, Button, Ripple, UserFormModalComponent
   ],
   providers: [MessageService],
   templateUrl: './transaction-list.html',
@@ -34,6 +35,7 @@ export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<User[]>([]);
   public isTransactionVisible = signal<boolean>(false);
+  public isUserModalVisible = signal<boolean>(false);
 
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
@@ -156,7 +158,7 @@ export class TransactionList implements OnInit {
     )
   }
 
-  private loadUsers() {
+  public loadUsers() {
     this.userService.getAllUsers().subscribe({
       next:(data: User[]) => {
         this.subAccounts.set(data);

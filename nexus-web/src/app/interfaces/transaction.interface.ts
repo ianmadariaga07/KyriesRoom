@@ -1,4 +1,4 @@
-import { User } from './user.interface';
+import {SubAccount} from './sub-account.interface';
 
 // el signo de ? significa que la propiedad es Opcional
 export interface Transaction{
@@ -10,9 +10,10 @@ export interface Transaction{
   description?: string;
   createdAt?: string;
   updatedAt?: string;
+  deletedAt?: string;
   transactionDate: string | Date;
 
-  userId?: User;
+  subAccount?: SubAccount;
 }
 
 export enum TransactionType {

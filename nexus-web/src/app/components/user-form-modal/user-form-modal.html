@@ -1,0 +1,81 @@
+<p-dialog
+  [(visible)]="isVisible"
+  (onHide)="closeModal()"
+  [modal]="true"
+  [draggable]="false"
+  [showHeader]="false"
+  [style]="{ width: '100%', maxWidth: '600px' }"
+  styleClass="bg-surface border border-outline-variant shadow-2xl rounded-xl overflow-hidden p-0 m-4">
+
+  <div class="relative z-0 overflow-hidden bg-background">
+    <!-- Glows de fondo -->
+    <div class="absolute top-[-20%] right-[-10%] w-[400px] h-[400px] bg-secondary-container rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+
+    <div class="p-8 relative z-10 w-full flex flex-col gap-6">
+
+      <!-- Header del Modal -->
+      <div class="flex items-center justify-between border-b border-outline-variant pb-6">
+        <div>
+          <div class="flex items-center gap-2 text-secondary mb-1">
+            <span class="material-symbols-outlined text-sm">person_add</span>
+            <span class="font-label-sm text-label-sm font-mono tracking-wider uppercase">Nueva_Subcuenta</span>
+          </div>
+          <h2 class="text-2xl text-white font-bold tracking-tight" style="font-family: 'Hanken Grotesk', sans-serif;">Registrar Usuario</h2>
+          <p class="text-sm text-on-surface-variant mt-1">Añada un nuevo integrante al control financiero.</p>
+        </div>
+        <button (click)="closeModal()" class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center transition-colors duration-200 text-on-surface-variant hover:text-white outline-none">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Form Layout -->
+      <form class="space-y-6" [formGroup]="userForm">
+
+        <div class="space-y-4">
+          <!-- Nombre -->
+          <div class="space-y-2">
+            <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Nombre Completo</label>
+            <input formControlName="fullName" type="text" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white px-4 py-3 placeholder:text-outline transition-colors" placeholder="Ej: Ian Madariaga" />
+          </div>
+
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Correo Electrónico</label>
+            <input formControlName="email" type="email" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white px-4 py-3 placeholder:text-outline transition-colors" placeholder="usuario@correo.com" />
+          </div>
+
+          <!-- Saldos Iniciales (Grid 2 columnas) -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Saldo Inicial Disponible</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-white font-bold">$</span>
+                <input formControlName="realBalance" type="number" step="0.01" min="0" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white pl-8 pr-4 py-3 transition-colors" />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-xs text-primary uppercase tracking-wider block font-semibold">Deuda Inicial (Azul)</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+                <input formControlName="creditCardDebt" type="number" step="0.01" min="0" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none rounded text-sm text-white pl-8 pr-4 py-3 transition-colors" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-4 pt-4 border-t border-outline-variant mt-6">
+          <button type="button" (click)="closeModal()" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold">
+            Cancelar
+          </button>
+          <button type="submit" (click)="onSubmit()" class="px-8 py-2 rounded bg-transparent border border-secondary text-secondary text-sm tracking-widest hover:bg-secondary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,255,0.1)] uppercase font-bold">
+            <span class="material-symbols-outlined text-sm">person_add</span>
+            Crear_Usuario
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</p-dialog>

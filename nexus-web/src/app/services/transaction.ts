@@ -15,7 +15,6 @@ export class TransactionService {
   }
 
   createTransaction(transaction: Transaction){
-    return this.http.post<Transaction[]>(this.apiUrl, transaction);
+    return this.http.post<Transaction>(this.apiUrl, transaction);
   }
-
 }

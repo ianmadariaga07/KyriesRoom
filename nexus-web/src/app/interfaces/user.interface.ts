@@ -1,17 +1,18 @@
-import {Transaction} from './transaction.interface';
+import {SubAccount} from './sub-account.interface';
 
 // el signo de ? significa que la propiedad es Opcional
 export interface User{
   id?: string;
-  fullName: string;
+  name:string;
+  lastName:string;
+  nickname:string;
   email: string;
   password?: string;
   isActive?: boolean;
   roles: string[];
-  realBalance: number;
-  creditCardDebt: number;
   createdAt?: string;
   updatedAt?: string;
+  deletedAt?: string;
 
-  transactions?: Transaction[];
+  subAccounts?: SubAccount[];
 }
