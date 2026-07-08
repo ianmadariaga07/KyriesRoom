@@ -4,51 +4,48 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 
 import { Transaction, TransactionType} from '../../interfaces/transaction.interface';
 import { TransactionService} from '../../services/transaction';
-import { User } from '../../interfaces/user.interface';
-import { UserService} from '../../services/user';
-import { UserFormModalComponent } from '../user-form-modal/user-form-modal';
+import {SubAccount} from '../../interfaces/sub-account.interface';
+import {SubAccountService} from '../../services/sub-account';
+import { SubAccountModal } from '../sub-account-modal/sub-account-modal';
 
 import { TableModule } from 'primeng/table';
 import { PrimeNG } from 'primeng/config';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
-import {Toast, ToastModule } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import {Button} from 'primeng/button';
-import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
   imports: [
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
-    ToastModule, Button, Ripple, UserFormModalComponent
+    ToastModule
   ],
   providers: [MessageService],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
 })
 
-//C L A S E
 export class TransactionList implements OnInit {
+  //los signals son variables inteligentes, notifica automaticamente cuando un valor cambia. ttodo es mas rapido
   public transactions = signal<Transaction[]>([]);
-  public subAccounts = signal<User[]>([]);
+  public subAccounts = signal<SubAccount[]>([]);
   public isTransactionVisible = signal<boolean>(false);
   public isUserModalVisible = signal<boolean>(false);
 
+  //quitamos el constructor y utilizamos inject que es la inyeccion de dependencias moderna
   private fb = inject(FormBuilder);
   private messageService = inject(MessageService);
+  private subAccountService = inject(SubAccountService);
+  private transactionService = inject(TransactionService);
+  private primeng = inject(PrimeNG);
   protected readonly TransactionType = TransactionType;
-
-  constructor(
-    private transactionService: TransactionService, private primeng: PrimeNG,
-    private userService: UserService
-  ){ }
 
   ngOnInit() {
     this.loadTransactions();
-    this.loadUsers();
+    this.loadSubAccounts();
     this.setupFormLogic();
     this.primeng.ripple.set(true);
   }
@@ -84,7 +81,7 @@ export class TransactionList implements OnInit {
   public transactionForm: FormGroup = this.fb.group({
     amount: [null, [Validators.required, Validators.min(0.01)]],
     type: ['expense', Validators.required], //valores: income, expense, payment
-    userId: ['', Validators.required],
+    subAccountId: ['', Validators.required],
     method: ['debito', Validators.required], //valores: debito, credito
     concept: ['', Validators.required],
     date: [new Date(), Validators.required],
@@ -92,6 +89,11 @@ export class TransactionList implements OnInit {
   });
 
   public onSubmit() {
+    if (this.transactionForm.invalid) {
+      this.messageService.add({ severity: 'warn', summary: 'Error de Validacion', detail: 'Campos requeridos faltantes' });
+      return;
+    }
+
     const formValues = this.transactionForm.value;
     const isCreditCard: boolean = this.transactionForm.get('method')?.value === 'credito';
     let mappedType: TransactionType;
@@ -100,21 +102,38 @@ export class TransactionList implements OnInit {
     else if (formValues.type === 'expense') mappedType = TransactionType.EXPENSE;
     else mappedType = TransactionType.PAYMENT;
 
+    //cambiamos esto y utilizamos la forma del payload por como manejamos los id y las subcuentas
+    /*
     const newTransaction: Transaction = {
       amount: Number(formValues.amount),
       type: mappedType,
-      userId: formValues.userId,
+      subAccount: formValues.subAccountId,
+      isCreditCard: isCreditCard,
+      concept: formValues.concept,
+      transactionDate: formValues.date,
+      description: formValues.description
+    }; */
+
+    const payload = {
+      amount: Number(formValues.amount),
+      type: mappedType,
+      //pasamos directamente el id
+      subAccountId: formValues.subAccountId,
       isCreditCard: isCreditCard,
       concept: formValues.concept,
       transactionDate: formValues.date,
       description: formValues.description
     };
 
+
     if(this.transactionForm.valid) {
-      this.transactionService.createTransaction(newTransaction).subscribe({
+      //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
+      this.transactionService.createTransaction(payload as any).subscribe({
         next:(createdTx) => {
           this.isTransactionVisible.set(false);
           this.loadTransactions();
+          this.loadSubAccounts();
+          //recargamps para actualizar los saldos visuales
           this.transactionForm.reset({
               type: 'expense',
               method: 'debito',
@@ -158,9 +177,9 @@ export class TransactionList implements OnInit {
     )
   }
 
-  public loadUsers() {
-    this.userService.getAllUsers().subscribe({
-      next:(data: User[]) => {
+  public loadSubAccounts() {
+    this.subAccountService.getAllSubAccounts().subscribe({
+      next:(data: SubAccount[]) => {
         this.subAccounts.set(data);
         console.log(this.subAccounts);
       }, error: (error) => {
@@ -185,5 +204,6 @@ export class TransactionList implements OnInit {
     }
   }
 
-  protected readonly TransactionService = TransactionService;
+  // esta linea era para que el HTML pudiera ver mi interfaz
+  //protected readonly TransactionService = TransactionService;
 }

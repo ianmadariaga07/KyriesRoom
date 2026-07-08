@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserFormModal } from './user-form-modal';
+import { SubAccountModal } from './sub-account-modal';
 
-describe('UserFormModal', () => {
-  let component: UserFormModal;
-  let fixture: ComponentFixture<UserFormModal>;
+describe('SubAccountModal', () => {
+  let component: SubAccountModal;
+  let fixture: ComponentFixture<SubAccountModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserFormModal]
+      imports: [SubAccountModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserFormModal);
+    fixture = TestBed.createComponent(SubAccountModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
