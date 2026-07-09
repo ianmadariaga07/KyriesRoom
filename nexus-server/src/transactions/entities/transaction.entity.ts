@@ -46,7 +46,6 @@ export class Transaction {
   transactionDate: Date;
 
   //nueva relacion, ahora pertenece a la Subcuenta, ya no directo al user
-  @Index()
   @ManyToOne(() => SubAccount, (subAccount) => subAccount.transactions, {
     nullable: false,
   })

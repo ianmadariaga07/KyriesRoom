@@ -8,7 +8,6 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
-  Index,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Transaction } from '../../transactions/entities/transaction.entity';
@@ -34,7 +33,6 @@ export class SubAccount {
   deletedAt: Date;
 
   //RELACION muchas subcuentas pertenecen a 1 Usuario
-  @Index() //indice para buscar rapido todas las subcuentas de un usuario
   @ManyToOne(() => User, (user) => user.subAccounts, { nullable: false })
   @JoinColumn({ name: 'userId' })
   user: User;
