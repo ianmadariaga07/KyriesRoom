@@ -29,19 +29,13 @@
       </div>
 
       <!-- Form Layout -->
-      <form class="space-y-6" [formGroup]="userForm">
+      <form class="space-y-6" [formGroup]="subAccountForm">
 
         <div class="space-y-4">
           <!-- Nombre -->
           <div class="space-y-2">
             <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Nombre Completo</label>
-            <input formControlName="fullName" type="text" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white px-4 py-3 placeholder:text-outline transition-colors" placeholder="Ej: Ian Madariaga" />
-          </div>
-
-          <!-- Email -->
-          <div class="space-y-2">
-            <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Correo Electrónico</label>
-            <input formControlName="email" type="email" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white px-4 py-3 placeholder:text-outline transition-colors" placeholder="usuario@correo.com" />
+            <input formControlName="name" type="text" class="w-full bg-surface-bright border border-outline-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none rounded text-sm text-white px-4 py-3 placeholder:text-outline transition-colors" placeholder="Ej: Ian Madariaga" />
           </div>
 
           <!-- Saldos Iniciales (Grid 2 columnas) -->
@@ -74,7 +68,6 @@
             Crear_Usuario
           </button>
         </div>
-
       </form>
     </div>
   </div>

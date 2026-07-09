@@ -15,7 +15,6 @@ import { UserService } from '../../services/user';
   styleUrl: './sub-account-modal.css',
 })
 
-
 export class SubAccountModal {
   @Input() isVisible: boolean = false;
   //le avisamos al padre que nos cerraron

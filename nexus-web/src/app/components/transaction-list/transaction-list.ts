@@ -21,7 +21,7 @@ import { MessageService } from 'primeng/api';
   standalone: true, //por default ya es true
   imports: [
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
-    ToastModule
+    ToastModule, SubAccountModal
   ],
   providers: [MessageService],
   templateUrl: './transaction-list.html',
@@ -33,7 +33,7 @@ export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<SubAccount[]>([]);
   public isTransactionVisible = signal<boolean>(false);
-  public isUserModalVisible = signal<boolean>(false);
+  public isSubAccountModalVisible = signal<boolean>(false);
 
   //quitamos el constructor y utilizamos inject que es la inyeccion de dependencias moderna
   private fb = inject(FormBuilder);
@@ -103,6 +103,10 @@ export class TransactionList implements OnInit {
     else mappedType = TransactionType.PAYMENT;
 
     //cambiamos esto y utilizamos la forma del payload por como manejamos los id y las subcuentas
+    //si usamos newTransaction: Transaction nuestro back espera un objeto completo de subAccount
+    //pero nosotros solo tenemos un string del id
+    //con payload as any creas un objeto libre. Lo usamos cuando lo que mostramos en pantalla es diferente a
+    //lo que guardamos
     /*
     const newTransaction: Transaction = {
       amount: Number(formValues.amount),

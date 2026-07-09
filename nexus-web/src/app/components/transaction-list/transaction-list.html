@@ -56,7 +56,7 @@
         <span class="material-symbols-outlined">notifications</span>
       </button>
       <!-- boton nueva subcuenta/user -->
-      <button (click)="isUserModalVisible.set(true)" class="bg-transparent border border-primary text-primary text-sm px-5 py-2.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 flex items-center gap-2">
+      <button (click)="isSubAccountModalVisible.set(true)" class="bg-transparent border border-primary text-primary text-sm px-5 py-2.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 flex items-center gap-2">
         <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
         Nueva Subcuenta/Usuario
       </button>
@@ -137,7 +137,7 @@
           <div class="bg-surface-variant/40 rounded-lg border border-outline-variant p-4 flex flex-col gap-2 hover:bg-surface-variant/60 transition-colors">
             <!-- nombre de la subcuenta -->
             <div class="flex justify-between items-center">
-              <span class="font-bold text-on-surface uppercase tracking-wide text-sm">{{ account.fullName }}</span>
+              <span class="font-bold text-on-surface uppercase tracking-wide text-sm">{{ account.name }}</span>
               <span class="material-symbols-outlined text-outline text-sm">person</span>
             </div>
             <!-- saldos -->
@@ -195,7 +195,7 @@
           <ng-template #body let-tx>
             <tr class="hover:bg-surface-variant transition-colors group border-b border-outline-variant/50">
 
-              <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">{{ tx.user?.fullName }}</td>
+              <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">{{ tx.subAccount?.name }}</td>
 
               <td class="px-6 py-4">
                 <p class="text-sm text-on-surface">{{ tx.concept }}</p>
@@ -356,9 +356,9 @@
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Responsable</label>
               <div class="relative">
                 <p-select
-                  formControlName="userId"
+                  formControlName="subAccountId"
                   [options]="subAccounts()"
-                  optionLabel="fullName"
+                  optionLabel="name"
                   optionValue="id"
                   placeholder="Seleccione..."
                   appendTo="body"
@@ -488,9 +488,8 @@
     </ng-template>
   </p-toast>
 
-  <app-user-form-modal
-    [(isVisible)]="isUserModalVisible"
-    (onUserCreated)="loadUsers()">
-  </app-user-form-modal>
-
+  <app-sub-account-modal
+    [(isVisible)]="isSubAccountModalVisible"
+    (onUserCreated)="loadSubAccounts()">
+  </app-sub-account-modal>
 </main>
