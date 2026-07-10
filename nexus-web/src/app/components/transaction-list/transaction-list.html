@@ -304,12 +304,15 @@
               <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-white font-bold text-xl">$</span>
                 <input formControlName="amount"
-                       class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors"
+                       class="w-full bg-surface-bright border  outline-none rounded text-xl text-white pl-10 pr-4 py-3 placeholder:text-outline transition-colors"
                        placeholder="0.00"
                        step="0.01"
                        type="number"
                        min="0"
                        (keydown)="onMontoKeyPress($event)"
+                       [ngClass]="transactionForm.get('amount')?.invalid && transactionForm.get('amount')?.touched
+                                  ? 'border-yellow-500 focus:border-yellow-500 ring-1 ring-yellow-500'
+                                  : 'border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface'"
                 />
               </div>
             </div>

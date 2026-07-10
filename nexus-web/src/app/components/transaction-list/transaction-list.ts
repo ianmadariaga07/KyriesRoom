@@ -90,6 +90,8 @@ export class TransactionList implements OnInit {
 
   public onSubmit() {
     if (this.transactionForm.invalid) {
+      //finge que el usuario ya dio clic y ensucio todos los campos del formulario
+      this.transactionForm.markAllAsTouched();
       this.messageService.add({ severity: 'warn', summary: 'Error de Validacion', detail: 'Campos requeridos faltantes' });
       return;
     }
