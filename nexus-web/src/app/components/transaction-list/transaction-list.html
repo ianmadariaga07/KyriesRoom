@@ -288,7 +288,7 @@
             <h2 class="font-headline-lg text-headline-lg text-white font-bold tracking-tight" style="font-family: 'Hanken Grotesk', sans-serif;">Registrar Transacción</h2>
             <p class="font-body-md text-sm text-on-surface-variant mt-1">Ingrese los detalles de la operación en el libro mayor.</p>
           </div>
-          <button (click)="isTransactionVisible.set(false)" class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center transition-colors duration-200 text-on-surface-variant hover:text-white">
+          <button (click)="closeTransactionForm()" class="w-10 h-10 rounded-full hover:bg-surface-variant flex items-center justify-center transition-colors duration-200 text-on-surface-variant hover:text-white">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
@@ -365,8 +365,11 @@
                   optionValue="id"
                   placeholder="Seleccione..."
                   appendTo="body"
-                  class="w-full bg-surface-bright border border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-surface outline-none rounded text-sm text-white h-[42px] transition-colors items-center shadow-sm"
+                  class="w-full bg-surface-bright border outline-none rounded text-sm text-white h-[42px] transition-colors items-center shadow-sm"
                   panelStyleClass="bg-surface-variant border border-outline-variant shadow-2xl rounded-md overflow-hidden mt-1"
+                  [class]="transactionForm.get('subAccountId')?.invalid && transactionForm.get('subAccountId')?.touched
+                                  ? 'border-yellow-500 focus:border-yellow-500 ring-1 ring-yellow-500'
+                                  : 'border-outline-variant focus-within:border-primary focus-within:ring-1 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-surface'"
                   [pt]="{
                     label: { class: 'pl-4 text-on-surface'},
                     dropdown: { class: 'pr-3 text-on-surface-variant' },
@@ -402,7 +405,13 @@
             <!-- Concepto -->
             <div class="space-y-2">
               <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Concepto / Título</label>
-              <input formControlName="concept" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant transition-colors" placeholder="Ej: Compra Supermercado" type="text"/>
+              <input formControlName="concept"
+                     class="w-full bg-surface-bright border  outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant transition-colors"
+                     placeholder="Ej: Compra Supermercado"
+                     type="text"
+                     [ngClass]="transactionForm.get('concept')?.invalid && transactionForm.get('concept')?.touched
+                                  ? 'border-yellow-500 focus:border-yellow-500 ring-1 ring-yellow-500'
+                                  : 'border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface'"/>
             </div>
           </div>
 
@@ -419,7 +428,9 @@
                   dateFormat="mm / dd / yy"
                   appendTo="body"
                   class="w-full h-[42px]"
-                  inputStyleClass="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 h-full transition-colors"
+                  [inputStyleClass]="transactionForm.get('date')?.invalid && transactionForm.get('date')?.touched
+                                      ? 'w-full bg-surface-bright border-yellow-500 ring-1 ring-yellow-500 outline-none rounded text-sm text-white px-4 h-full transition-colors'
+                                      : 'w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 h-full transition-colors'"
                   panelStyleClass="bg-surface-variant border border-outline-variant text-white shadow-2xl rounded-xl !z-[10000]">
                 </p-datePicker>
               </div>
@@ -443,12 +454,15 @@
                 <span class="text-outline-variant lowercase font-normal">(opcional)</span>
               </label>
             </div>
-            <textarea formControlName="description" class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant  resize-y transition-colors" placeholder="Añadir notas, referencias o tags..." rows="2"></textarea>
+            <textarea formControlName="description"
+                      class="w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 py-2.5 placeholder:text-on-surface-variant  resize-y transition-colors"
+                      placeholder="Añadir notas, referencias o tags..."
+                      rows="2"></textarea>
           </div>
 
           <!-- Actions -->
           <div class="flex justify-end gap-4 pt-4">
-            <button type="button" (click)="isTransactionVisible.set(false)" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold">
+            <button type="button" (click)="closeTransactionForm()" class="px-6 py-2 rounded border border-outline-variant text-on-surface-variant text-sm hover:text-white hover:border-outline transition-colors duration-200 uppercase tracking-wider font-semibold">
               Cancelar
             </button>
             <button type="submit" (click)="onSubmit()" class="px-8 py-2 rounded bg-transparent border border-primary text-primary text-sm tracking-widest hover:bg-primary/10 active:scale-95 transition-all duration-200 flex items-center gap-2 shadow-[0_0_20px_rgba(255,0,77,0.1)] uppercase font-bold">

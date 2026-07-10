@@ -157,6 +157,8 @@ export class TransactionList implements OnInit {
       console.warn("Formulario inválido, abortando envío.");
       this.messageService.add({ severity: 'warn', summary: 'Error de Validacion', detail: 'Campos requeridos faltantes' });
     }
+
+    //this.transactionForm.clearValidators()
   }
 
   private setupFormLogic() {
@@ -208,6 +210,15 @@ export class TransactionList implements OnInit {
         event.preventDefault();
       }
     }
+  }
+
+  public closeTransactionForm() {
+    this.isTransactionVisible.set(false)
+    this.transactionForm.reset({
+      type: 'expense',
+      method: 'debito',
+      date: new Date()
+    });
   }
 
   // esta linea era para que el HTML pudiera ver mi interfaz
