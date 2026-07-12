@@ -88,9 +88,51 @@ export class TransactionsService {
   }
 
   async remove(id: string) {
-    const transaction = await this.findOne(id);
+    //const subAccount = await this.subAccountRepository.findOne({
+    //  where: { id: transactionDto.subAccountId },
+    //});
+
+    //if (!subAccount)
+    //  throw new NotFoundException('No se ha encontrado la subcuenta');
+
+    //const transaction = this.transactionRepository.create({
+    //   ...transactionDto,
+    //  subAccount: subAccount,
+    //});
+
+    //const amount = Number(transactionDto.amount);
+    //const currentRealBalance = Number(subAccount.realBalance);
+    //const currentCreditCardDebt = Number(subAccount.creditCardDebt);
     //hacemos soft remove
+    //await this.transactionRepository.softRemove(transaction);
+
+    const transaction = await this.findOne(id);
+    const subAccount = transaction.subAccount; // Extraemos la libreta
+
+    const amount = Number(transaction.amount);
+    const currentRealBalance = Number(subAccount.realBalance);
+    const currentCreditCardDebt = Number(subAccount.creditCardDebt);
+
+    if (transaction.type === TransactionType.INCOME) {
+      subAccount.realBalance = currentRealBalance - amount;
+    } else if (transaction.type === TransactionType.EXPENSE) {
+      if (transaction.isCreditCard) {
+        subAccount.realBalance = currentRealBalance + amount;
+        subAccount.creditCardDebt = currentCreditCardDebt - amount;
+      } else {
+        subAccount.realBalance = currentRealBalance + amount;
+      }
+    } else if (transaction.type === TransactionType.PAYMENT) {
+      subAccount.creditCardDebt = currentCreditCardDebt + amount;
+    } else {
+      throw new NotFoundException(
+        'No se ha realizado la transaccion. Intente de nuevo',
+      );
+    }
+
+    await this.subAccountRepository.save(subAccount);
     await this.transactionRepository.softRemove(transaction);
+
     return { message: 'Transacción anulada correctamente' };
   }
 }
