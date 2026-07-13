@@ -88,26 +88,11 @@ export class TransactionsService {
   }
 
   async remove(id: string) {
-    //const subAccount = await this.subAccountRepository.findOne({
-    //  where: { id: transactionDto.subAccountId },
-    //});
-
-    //if (!subAccount)
-    //  throw new NotFoundException('No se ha encontrado la subcuenta');
-
-    //const transaction = this.transactionRepository.create({
-    //   ...transactionDto,
-    //  subAccount: subAccount,
-    //});
-
-    //const amount = Number(transactionDto.amount);
-    //const currentRealBalance = Number(subAccount.realBalance);
-    //const currentCreditCardDebt = Number(subAccount.creditCardDebt);
-    //hacemos soft remove
-    //await this.transactionRepository.softRemove(transaction);
-
     const transaction = await this.findOne(id);
-    const subAccount = transaction.subAccount; // Extraemos la libreta
+    const subAccount = transaction.subAccount;
+
+    if (!subAccount)
+      throw new NotFoundException('No se ha encontrado la subcuenta');
 
     const amount = Number(transaction.amount);
     const currentRealBalance = Number(subAccount.realBalance);
