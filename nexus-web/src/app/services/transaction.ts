@@ -17,4 +17,10 @@ export class TransactionService {
   createTransaction(transaction: Transaction){
     return this.http.post<Transaction>(this.apiUrl, transaction);
   }
+
+  //pegamos el id en la url porque en las reglas de api rest cuando es delete
+  //el id va pegado en la url, asi como en postman. Usamos Template Literals
+  removeTransaction(id: string){
+    return this.http.delete<Transaction>(`${this.apiUrl}/${id}`);
+  }
 }

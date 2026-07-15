@@ -31,7 +31,6 @@ export class TransactionsService {
 
     //LOGICA DE SALDOS
     const amount = Number(createTransactionDto.amount);
-
     const currentRealBalance = Number(subAccount.realBalance);
     const currentCreditCardDebt = Number(subAccount.creditCardDebt);
 
@@ -54,7 +53,6 @@ export class TransactionsService {
     //primero guardamos la subcuenta y despues la transaccion
     await this.subAccountRepository.save(subAccount);
     await this.transactionRepository.save(transaction);
-
     return transaction;
   }
 
