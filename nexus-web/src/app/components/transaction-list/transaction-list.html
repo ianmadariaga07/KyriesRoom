@@ -250,6 +250,10 @@
                   <span class="material-symbols-outlined" style="font-size: 18px;">density_small</span>
                   Descripcion
                 </button>
+                <button type="button" (click)="deleteTransaction(tx.id)" class="bg-transparent border border-primary text-primary text-sm px-3 py-1.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 inline-flex items-center gap-2">
+                  <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+                  Eliminar
+                </button>
               </td>
             </tr>
           </ng-template>
@@ -257,9 +261,6 @@
       </div>
     </div>
   </div>
-
-
-
 
   <!-- NUEVA TRANSACCIÓN -->
   <p-dialog

@@ -161,15 +161,17 @@ export class TransactionList implements OnInit {
     //this.transactionForm.clearValidators()
   }
 
-  private setupFormLogic() {
-    //escuchamos cada vez que cambia el tipo de transaccion
-    this.transactionForm.get('type')?.valueChanges.subscribe(selectedType => {
-      //si selecciona INGRESO o PAGO A TARJETA
-      if (selectedType === 'income' || selectedType === 'payment') {
-        //vamos a seleccionar forzosamente debito
-        this.transactionForm.get('method')?.setValue('debito');
+  public deleteTransaction(id: string) {
+    this.transactionService.removeTransaction(id).subscribe({
+      next: (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Transaccion Eliminada', detail: 'Status: verified' });
+        this.loadTransactions();
+        this.loadSubAccounts();
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada' });
       }
-    });
+    })
   }
 
   private loadTransactions() {
@@ -194,6 +196,17 @@ export class TransactionList implements OnInit {
         console.error('Error:', error);
       }
     })
+  }
+
+  private setupFormLogic() {
+    //escuchamos cada vez que cambia el tipo de transaccion
+    this.transactionForm.get('type')?.valueChanges.subscribe(selectedType => {
+      //si selecciona INGRESO o PAGO A TARJETA
+      if (selectedType === 'income' || selectedType === 'payment') {
+        //vamos a seleccionar forzosamente debito
+        this.transactionForm.get('method')?.setValue('debito');
+      }
+    });
   }
 
   public onMontoKeyPress(event: KeyboardEvent) {
@@ -221,6 +234,6 @@ export class TransactionList implements OnInit {
     });
   }
 
-  // esta linea era para que el HTML pudiera ver mi interfaz
+  //esta linea era para que el HTML pudiera ver mi interfaz
   //protected readonly TransactionService = TransactionService;
 }
