@@ -33,6 +33,7 @@ export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<SubAccount[]>([]);
   public isTransactionVisible = signal<boolean>(false);
+  public confirmDeleteVisible = signal<boolean>(false);
   public isSubAccountModalVisible = signal<boolean>(false);
 
   //quitamos el constructor y utilizamos inject que es la inyeccion de dependencias moderna
