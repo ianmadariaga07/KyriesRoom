@@ -504,6 +504,11 @@
     </ng-template>
   </p-toast>
 
+  <app-confirm-delete-transaction
+    [(isVisible)]="isTransactionDelete"
+    (onConfirm)="executeDelete()">
+  </app-confirm-delete-transaction>
+
   <app-sub-account-modal
     [(isVisible)]="isSubAccountModalVisible"
     (onUserCreated)="loadSubAccounts()">

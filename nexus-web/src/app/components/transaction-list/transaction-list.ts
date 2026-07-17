@@ -7,6 +7,7 @@ import { TransactionService} from '../../services/transaction';
 import {SubAccount} from '../../interfaces/sub-account.interface';
 import {SubAccountService} from '../../services/sub-account';
 import { SubAccountModal } from '../sub-account-modal/sub-account-modal';
+import {ConfirmDeleteTransaction} from '../confirm-delete-transaction/confirm-delete-transaction';
 
 import { TableModule } from 'primeng/table';
 import { PrimeNG } from 'primeng/config';
@@ -21,7 +22,7 @@ import { MessageService } from 'primeng/api';
   standalone: true, //por default ya es true
   imports: [
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
-    ToastModule, SubAccountModal
+    ToastModule, SubAccountModal, ConfirmDeleteTransaction
   ],
   providers: [MessageService],
   templateUrl: './transaction-list.html',
@@ -33,8 +34,9 @@ export class TransactionList implements OnInit {
   public transactions = signal<Transaction[]>([]);
   public subAccounts = signal<SubAccount[]>([]);
   public isTransactionVisible = signal<boolean>(false);
-  public confirmDeleteVisible = signal<boolean>(false);
+  public isTransactionDelete = signal<boolean>(false);
   public isSubAccountModalVisible = signal<boolean>(false);
+  public idDelete: string = '';
 
   //quitamos el constructor y utilizamos inject que es la inyeccion de dependencias moderna
   private fb = inject(FormBuilder);
@@ -163,7 +165,12 @@ export class TransactionList implements OnInit {
   }
 
   public deleteTransaction(id: string) {
-    this.transactionService.removeTransaction(id).subscribe({
+    this.idDelete = id;
+    this.isTransactionDelete.set(true);
+  }
+
+  public executeDelete() {
+    this.transactionService.removeTransaction(this.idDelete).subscribe({
       next: (response) => {
         this.messageService.add({ severity: 'success', summary: 'Transaccion Eliminada', detail: 'Status: verified' });
         this.loadTransactions();
@@ -175,7 +182,7 @@ export class TransactionList implements OnInit {
     })
   }
 
-  private loadTransactions() {
+  public loadTransactions() {
     this.transactionService.getAllTransactions().subscribe({
         next:(data: Transaction[]) => {
           this.transactions.set(data);

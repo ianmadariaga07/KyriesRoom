@@ -40,7 +40,7 @@ export class SubAccountModal {
   ngOnInit() {
     this.userService.getAllUsers().subscribe({
       next: (users) => {
-        // Si hay usuarios en la base de datos, tomamos el ID del primero
+        //Si hay usuarios en la base de datos, tomamos el ID del primero
         if (users && users.length > 0) {
           this.currentUserId = users[0].id!;
         }
