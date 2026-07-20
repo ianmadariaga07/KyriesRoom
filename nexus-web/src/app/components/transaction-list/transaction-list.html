@@ -9,7 +9,7 @@
       <p class="text-on-surface-variant text-xs">PAGINA PERSONAL</p>
     </div>
   </div>
-  <ul class="flex flex-col gap-2 flex-grow">
+  <ul class="flex flex-col gap-2 grow">
     <!-- Active Tab: Dashboard -->
     <li>
       <a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded hover:bg-surface-variant transition-all translate-x-1 duration-200" href="#">
@@ -72,22 +72,8 @@
   <div class="p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full space-y-gutter flex-1 mt-8">
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-      <!-- Tarjeta 1: Total App -->
-      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-sm text-on-surface-variant">Total App</span>
-            <span class="material-symbols-outlined text-on-surface-variant">account_balance_wallet</span>
-          </div>
-          <h3 class="text-on-surface font-bold" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 40px;">{{ globalTotalApp() | currency:'MXN' }}</h3>
-        </div>
-        <div class="mt-6 flex items-center gap-2">
-          <span class="material-symbols-outlined text-secondary text-sm filled">arrow_upward</span>
-          <span class="text-xs text-secondary">+2.4% este mes</span>
-        </div>
-      </div>
 
-      <!-- Tarjeta 2: Tarjeta Azul -->
+      <!-- Tarjeta 1: Tarjeta Azul -->
       <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
         <div class="absolute right-0 top-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 transition-opacity group-hover:opacity-100 opacity-50"></div>
         <div class="relative z-10">
@@ -110,7 +96,7 @@
         </div>
       </div>
 
-      <!-- Tarjeta 3: Total Real -->
+      <!-- Tarjeta 2: Total Real -->
       <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
         <div class="absolute left-0 bottom-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -ml-10 -mb-10 transition-opacity group-hover:opacity-100 opacity-50"></div>
         <div class="relative z-10">
@@ -123,6 +109,21 @@
         </div>
         <div class="relative z-10 mt-6 w-full bg-surface-variant rounded h-1.5 overflow-hidden">
           <div class="bg-secondary h-1.5 rounded shadow-[0_0_10px_rgba(0,255,255,0.5)]" style="width: 77%"></div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3: Total App -->
+      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-on-surface-variant">Total App</span>
+            <span class="material-symbols-outlined text-on-surface-variant">account_balance_wallet</span>
+          </div>
+          <h3 class="text-on-surface font-bold" style="font-family: 'Hanken Grotesk', sans-serif; font-size: 40px;">{{ globalTotalApp() | currency:'MXN' }}</h3>
+        </div>
+        <div class="mt-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-secondary text-sm filled">arrow_upward</span>
+          <span class="text-xs text-secondary">+2.4% este mes</span>
         </div>
       </div>
     </div>
