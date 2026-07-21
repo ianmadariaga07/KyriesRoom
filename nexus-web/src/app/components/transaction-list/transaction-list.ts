@@ -16,13 +16,14 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import {TransactionModal} from '../transaction-modal/transaction-modal';
 
 @Component({
   selector: 'app-transaction-list',
   standalone: true, //por default ya es true
   imports: [
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
-    ToastModule, SubAccountModal, ConfirmDeleteTransaction
+    ToastModule, SubAccountModal, ConfirmDeleteTransaction, TransactionModal
   ],
   providers: [MessageService],
   templateUrl: './transaction-list.html',
