@@ -291,9 +291,20 @@
     </ng-template>
   </p-toast>
 
+
+  <!--AQUI UN SIGNAL LLEVA PARENTESIS Y EL OTRO NO POR LA DIRECCION DE LOS DATOS.
+      [(isVisible)]="isTransactionVisible"
+      AQUI EL SIGNAL NO LLEVA PARENTESIS PORQUE LA SINTAXIS [( )] SE REFIERE A QUE EL COMPONENTE HIJO PUEDE
+      LEER Y ESCRIBIR EL DATO. IGUAL LE MANDAS LA CAJA COMPLETA
+      [subAccountList]="subAccounts()"
+      SI LLEVA CORCHETES SIMPLES [] SIGNIFICA QUE SOLO SE LEEN LOS DATOS Y
+      SE ENVIAN AL COMPONENTE HIJO, UN SOLO SENTIDO, ASI QUE SE LE PONE PARENTESIS AL SIGNAL.
+      SOLO LE ENVIAS EL DATO CRUDO, NO LA CAJA
+      -->
   <app-transaction-modal
-    [(isVisible)]="isTransactionVisible()"
-    (openModal)="onSubmit()">
+    [(isVisible)]="isTransactionVisible"
+    [subAccountList]="subAccounts()"
+    (transactionSaved)="loadTransactions();loadSubAccounts()">
   </app-transaction-modal>
 
   <app-confirm-delete-transaction

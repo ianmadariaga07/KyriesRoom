@@ -1,6 +1,6 @@
 <!-- NUEVA TRANSACCIÓN -->
 <p-dialog
-  [(visible)]="isTransactionVisible"
+  [(visible)]="isVisible"
   [modal]="true"
   [draggable]="false"
   [showHeader]="false"
@@ -97,7 +97,7 @@
             <div class="relative">
               <p-select
                 formControlName="subAccountId"
-                [options]="subAccounts()"
+                [options]="subAccountList"
                 optionLabel="name"
                 optionValue="id"
                 placeholder="Seleccione..."
