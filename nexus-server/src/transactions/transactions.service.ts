@@ -31,25 +31,8 @@ export class TransactionsService {
 
     //LOGICA DE SALDOS
     const amount = Number(createTransactionDto.amount);
-    const currentRealBalance = Number(subAccount.realBalance);
-    const currentCreditCardDebt = Number(subAccount.creditCardDebt);
+    this.logicaSaldos(transaction, subAccount, amount);
 
-    if (transaction.type === TransactionType.INCOME) {
-      subAccount.realBalance = currentRealBalance + amount;
-    } else if (transaction.type === TransactionType.EXPENSE) {
-      if (transaction.isCreditCard) {
-        subAccount.realBalance = currentRealBalance - amount;
-        subAccount.creditCardDebt = currentCreditCardDebt + amount;
-      } else {
-        subAccount.realBalance = currentRealBalance - amount;
-      }
-    } else if (transaction.type === TransactionType.PAYMENT) {
-      subAccount.creditCardDebt = currentCreditCardDebt - amount;
-    } else {
-      throw new NotFoundException(
-        'No se ha realizado la transaccion. Intente de nuevo',
-      );
-    }
     //primero guardamos la subcuenta y despues la transaccion
     await this.subAccountRepository.save(subAccount);
     await this.transactionRepository.save(transaction);
@@ -80,8 +63,22 @@ export class TransactionsService {
 
   async update(id: string, updateTransactionDto: UpdateTransactionDto) {
     const transaction = await this.findOne(id);
+    const subAccount = transaction.subAccount;
+
+    if (!subAccount)
+      throw new NotFoundException('No se ha encontrado la subcuenta');
+
+    this.limpiezaLogicaSaldos(transaction, subAccount);
     //combina los datos actuales con los nuevos
     const updatedTransaction = Object.assign(transaction, updateTransactionDto);
+    const amount = Number(updatedTransaction.amount);
+
+    if (updateTransactionDto.subAccountId !== subAccount.id) {
+    } else {
+      this.logicaSaldos(updatedTransaction, subAccount, amount);
+      await this.subAccountRepository.save(subAccount);
+    }
+
     return await this.transactionRepository.save(updatedTransaction);
   }
 
@@ -92,6 +89,41 @@ export class TransactionsService {
     if (!subAccount)
       throw new NotFoundException('No se ha encontrado la subcuenta');
 
+    this.limpiezaLogicaSaldos(transaction, subAccount);
+
+    await this.subAccountRepository.save(subAccount);
+    await this.transactionRepository.softRemove(transaction);
+
+    return { message: 'Transacción anulada correctamente' };
+  }
+
+  logicaSaldos(
+    transaction: Transaction,
+    subAccount: SubAccount,
+    amount: number,
+  ) {
+    const currentRealBalance = Number(subAccount.realBalance);
+    const currentCreditCardDebt = Number(subAccount.creditCardDebt);
+
+    if (transaction.type === TransactionType.INCOME) {
+      subAccount.realBalance = currentRealBalance + amount;
+    } else if (transaction.type === TransactionType.EXPENSE) {
+      if (transaction.isCreditCard) {
+        subAccount.realBalance = currentRealBalance - amount;
+        subAccount.creditCardDebt = currentCreditCardDebt + amount;
+      } else {
+        subAccount.realBalance = currentRealBalance - amount;
+      }
+    } else if (transaction.type === TransactionType.PAYMENT) {
+      subAccount.creditCardDebt = currentCreditCardDebt - amount;
+    } else {
+      throw new NotFoundException(
+        'No se ha realizado la transaccion. Intente de nuevo',
+      );
+    }
+  }
+
+  limpiezaLogicaSaldos(transaction: Transaction, subAccount: SubAccount) {
     const amount = Number(transaction.amount);
     const currentRealBalance = Number(subAccount.realBalance);
     const currentCreditCardDebt = Number(subAccount.creditCardDebt);
@@ -112,10 +144,5 @@ export class TransactionsService {
         'No se ha realizado la transaccion. Intente de nuevo',
       );
     }
-
-    await this.subAccountRepository.save(subAccount);
-    await this.transactionRepository.softRemove(transaction);
-
-    return { message: 'Transacción anulada correctamente' };
   }
 }
