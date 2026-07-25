@@ -70,16 +70,29 @@ export class TransactionsService {
 
     this.limpiezaLogicaSaldos(transaction, subAccount);
     //combina los datos actuales con los nuevos
-    const updatedTransaction = Object.assign(transaction, updateTransactionDto);
-    const amount = Number(updatedTransaction.amount);
+    const updateTransaction = Object.assign(transaction, updateTransactionDto);
+    const updateAmount = Number(transaction.amount);
 
-    if (updateTransactionDto.subAccountId !== subAccount.id) {
+    if (updateTransaction.subAccountId !== subAccount.id) {
+      const updatedSubAccount = await this.subAccountRepository.findOne({
+        where: { id: updateTransaction.subAccountId },
+      });
+
+      if (!updatedSubAccount)
+        throw new NotFoundException(
+          'La nueva subcuenta seleccionada no existe',
+        );
+
+      updateTransaction.subAccount = updatedSubAccount;
+      this.logicaSaldos(updateTransaction, updatedSubAccount, updateAmount);
+      await this.subAccountRepository.save(subAccount);
+      await this.subAccountRepository.save(updatedSubAccount);
     } else {
-      this.logicaSaldos(updatedTransaction, subAccount, amount);
+      this.logicaSaldos(updateTransaction, subAccount, updateAmount);
       await this.subAccountRepository.save(subAccount);
     }
 
-    return await this.transactionRepository.save(updatedTransaction);
+    return await this.transactionRepository.save(updateTransaction);
   }
 
   async remove(id: string) {
