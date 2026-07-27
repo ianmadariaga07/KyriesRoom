@@ -23,4 +23,8 @@ export class TransactionService {
   removeTransaction(id: string){
     return this.http.delete<Transaction>(`${this.apiUrl}/${id}`);
   }
+
+  updateTransaction(id: string, transaction: Transaction){
+    return this.http.patch<Transaction>(`${this.apiUrl}/${id}`, transaction);
+  }
 }
