@@ -8,6 +8,7 @@ import {Transaction, TransactionType} from '../../interfaces/transaction.interfa
 import {TransactionService} from '../../services/transaction';
 import {NgClass} from '@angular/common';
 import {SubAccount} from '../../interfaces/sub-account.interface';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-transaction-modal',
@@ -151,39 +152,29 @@ export class TransactionModal implements OnInit, OnChanges {
   }
 
   public suscribeTransaction(payload: any) {
-    if(this.transactionData?.id){
-      this.transactionService.updateTransaction(this.transactionData.id, payload).subscribe({
-        next:()=>{
-          this.isVisibleChange.emit(false);
-          this.transactionSaved.emit(true);
-          this.transactionForm.reset({
-            type: 'expense',
-            method: 'debito',
-            date: new Date()
-          });
-          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
-        }, error: () => {
-          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
-        }
-      });
+    let request$: Observable<Transaction>;
+
+    if (this.transactionData?.id) {
+      request$ = this.transactionService.updateTransaction(this.transactionData.id, payload);
     } else {
-      //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
-      this.transactionService.createTransaction(payload as any).subscribe({
-        next:() => {
-          this.isVisibleChange.emit(false);
-          this.transactionSaved.emit(true);
-          //recargamps para actualizar los saldos visuales
-          this.transactionForm.reset({
-            type: 'expense',
-            method: 'debito',
-            date: new Date()
-          });
-          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
-        }, error: () => {
-          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
-        }
-      });
+      request$ = this.transactionService.createTransaction(payload as any);
     }
+
+    request$.subscribe({
+      next: () => {
+        this.isVisibleChange.emit(false);
+        this.transactionSaved.emit(true);
+        this.transactionForm.reset({
+          type: 'expense',
+          method: 'debito',
+          date: new Date()
+        });
+        this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
+      }
+    });
   }
 
 }
