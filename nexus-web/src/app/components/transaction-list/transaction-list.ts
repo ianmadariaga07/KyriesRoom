@@ -93,12 +93,12 @@ export class TransactionList implements OnInit {
 
   public executeDelete() {
     this.transactionService.removeTransaction(this.idDelete).subscribe({
-      next: (response) => {
+      next: () => {
         this.messageService.add({ severity: 'success', summary: 'Transaccion Eliminada', detail: 'Status: verified' });
         this.loadTransactions();
         this.loadSubAccounts();
       },
-      error: (err) => {
+      error: () => {
         this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada' });
       }
     })
@@ -108,8 +108,6 @@ export class TransactionList implements OnInit {
     this.transactionService.getAllTransactions().subscribe({
         next:(data: Transaction[]) => {
           this.transactions.set(data);
-          //VAMOS A QUITAR MAS ADELANTE LOS CONSOLE.LOG, PUES ESTOS NO SON RECOMENDABLES DE UTILIZAR EN PRODUCCION
-          console.log(this.transactions);
         }, error: (error) => {
           console.error('Error:', error);
         }
@@ -121,7 +119,6 @@ export class TransactionList implements OnInit {
     this.subAccountService.getAllSubAccounts().subscribe({
       next:(data: SubAccount[]) => {
         this.subAccounts.set(data);
-        console.log(this.subAccounts);
       }, error: (error) => {
         console.error('Error:', error);
       }
