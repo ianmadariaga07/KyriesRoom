@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -15,7 +15,7 @@ import { UserService } from '../../services/user';
   styleUrl: './sub-account-modal.css',
 })
 
-export class SubAccountModal {
+export class SubAccountModal implements OnInit {
   @Input() isVisible: boolean = false;
   //le avisamos al padre que nos cerraron
   @Output() isVisibleChange = new EventEmitter<boolean>();
