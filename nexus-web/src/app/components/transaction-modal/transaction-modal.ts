@@ -140,51 +140,50 @@ export class TransactionModal implements OnInit, OnChanges {
       description: formValues.description
     };
 
-
     if(this.transactionForm.valid) {
-      if(this.transactionData?.id){
-        this.transactionService.updateTransaction(this.transactionData.id, payload).subscribe({
-          next:()=>{
-            this.isVisibleChange.emit(false);
-            this.transactionSaved.emit(true);
-            this.transactionForm.reset({
-              type: 'expense',
-              method: 'debito',
-              date: new Date()
-            });
-            this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
-          }, error: (err) => {
-            //BORRAR CONSOLE.LOG PARA PRODUCCION
-            console.error('Error al guardar en NestJS:', err);
-            this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
-          }
-        })
-      } else {
-        //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
-        this.transactionService.createTransaction(payload as any).subscribe({
-          next:() => {
-            this.isVisibleChange.emit(false);
-            this.transactionSaved.emit(true);
-            //recargamps para actualizar los saldos visuales
-            this.transactionForm.reset({
-              type: 'expense',
-              method: 'debito',
-              date: new Date()
-            });
-            this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
-          }, error: (err) => {
-            //BORRAR CONSOLE.LOG PARA PRODUCCION
-            console.error('Error al guardar en NestJS:', err);
-            this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
-          }
-        });
-      }
+      this.suscribeTransaction(payload);
     } else {
       //BORRAR CONSOLE.LOG PARA PRODUCCION
       console.warn("Formulario inválido, abortando envío.");
       this.messageService.add({ severity: 'warn', summary: 'Error de Validacion', detail: 'Campos requeridos faltantes' });
     }
-
     //this.transactionForm.clearValidators()
   }
+
+  public suscribeTransaction(payload: any) {
+    if(this.transactionData?.id){
+      this.transactionService.updateTransaction(this.transactionData.id, payload).subscribe({
+        next:()=>{
+          this.isVisibleChange.emit(false);
+          this.transactionSaved.emit(true);
+          this.transactionForm.reset({
+            type: 'expense',
+            method: 'debito',
+            date: new Date()
+          });
+          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
+        }, error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
+        }
+      });
+    } else {
+      //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
+      this.transactionService.createTransaction(payload as any).subscribe({
+        next:() => {
+          this.isVisibleChange.emit(false);
+          this.transactionSaved.emit(true);
+          //recargamps para actualizar los saldos visuales
+          this.transactionForm.reset({
+            type: 'expense',
+            method: 'debito',
+            date: new Date()
+          });
+          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
+        }, error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
+        }
+      });
+    }
+  }
+
 }
