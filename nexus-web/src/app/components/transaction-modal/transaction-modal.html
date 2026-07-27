@@ -9,8 +9,8 @@
 
   <div class="relative z-0 overflow-hidden bg-background">
     <!-- Glows de fondo -->
-    <div class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary-container rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-secondary-container rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
+    <div class="absolute top-[-10%] right-[-5%] w-150 h-150 bg-primary-container rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-100 h-100 bg-secondary-container rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
 
     <!-- contenedor principal -->
     <div class="p-8 relative z-10 w-full flex flex-col gap-6">
@@ -57,7 +57,7 @@
           <!-- Tipo de Transacción (Radio Cards) -->
           <div class="space-y-2">
             <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Tipo de Transacción</label>
-            <div class="grid grid-cols-3 gap-2 h-[52px]">
+            <div class="grid grid-cols-3 gap-2 h-13">
               <label class="cursor-pointer relative">
                 <input formControlName="type" class="peer sr-only" name="type" type="radio" value="income"/>
                 <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary-container rounded flex items-center justify-center transition-all hover:bg-surface">
@@ -102,7 +102,7 @@
                 optionValue="id"
                 placeholder="Seleccione..."
                 appendTo="body"
-                class="w-full bg-surface-bright border outline-none rounded text-sm text-white h-[42px] transition-colors items-center shadow-sm"
+                class="w-full bg-surface-bright border outline-none rounded text-sm text-white h-10.5 transition-colors items-center shadow-sm"
                 panelStyleClass="bg-surface-variant border border-outline-variant shadow-2xl rounded-md overflow-hidden mt-1"
                 [class]="transactionForm.get('subAccountId')?.invalid && transactionForm.get('subAccountId')?.touched
                                   ? 'border-yellow-500 focus:border-yellow-500 ring-1 ring-yellow-500'
@@ -118,7 +118,7 @@
           <!-- Metodo de Pago -->
           <div class="space-y-2">
             <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold">Método</label>
-            <div class="grid grid-cols-2 gap-2 h-[42px]">
+            <div class="grid grid-cols-2 gap-2 h-10.5">
               <label class="cursor-pointer relative">
                 <input formControlName="method" class="peer sr-only" type="radio" value="debito"/>
                 <div class="h-full w-full bg-surface-bright border border-outline-variant peer-checked:border-secondary peer-checked:bg-secondary-container rounded flex items-center justify-center transition-all hover:bg-surface">
@@ -164,7 +164,7 @@
                 placeholder="mm / dd / yyyy"
                 dateFormat="mm / dd / yy"
                 appendTo="body"
-                class="w-full h-[42px]"
+                class="w-full h-10.5"
                 [inputStyleClass]="transactionForm.get('date')?.invalid && transactionForm.get('date')?.touched
                                       ? 'w-full bg-surface-bright border-yellow-500 ring-1 ring-yellow-500 outline-none rounded text-sm text-white px-4 h-full transition-colors'
                                       : 'w-full bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-surface outline-none rounded text-sm text-white px-4 h-full transition-colors'"
@@ -186,7 +186,7 @@
         <!-- Descripcion -->
         <div class="space-y-2  gap-6 border-t border-outline-variant pt-6">
           <div class="flex justify-between items-end">
-            <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold flex items-center gap-2">
+            <label class="text-xs text-on-surface-variant uppercase tracking-wider block font-semibold items-center gap-2">
               <span>Descripción Detallada</span>
               <span class="text-outline-variant lowercase font-normal">(opcional)</span>
             </label>
