@@ -1,10 +1,10 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {DatePicker} from "primeng/datepicker";
 import {Dialog} from "primeng/dialog";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Select} from "primeng/select";
 import {MessageService} from 'primeng/api';
-import {TransactionType} from '../../interfaces/transaction.interface';
+import {Transaction, TransactionType} from '../../interfaces/transaction.interface';
 import {TransactionService} from '../../services/transaction';
 import {NgClass} from '@angular/common';
 import {SubAccount} from '../../interfaces/sub-account.interface';
@@ -21,9 +21,10 @@ import {SubAccount} from '../../interfaces/sub-account.interface';
   templateUrl: './transaction-modal.html',
   styleUrl: './transaction-modal.css',
 })
-export class TransactionModal implements OnInit{
+export class TransactionModal implements OnInit, OnChanges {
   @Input() subAccountList: Array<SubAccount> = [];
   @Input() isVisible: boolean = false;
+  @Input() transactionData: Transaction | null = null;
   @Output() isVisibleChange = new EventEmitter<boolean>();
   @Output() transactionSaved = new EventEmitter<boolean>();
 
@@ -35,6 +36,27 @@ export class TransactionModal implements OnInit{
 
   ngOnInit() {
     this.setupFormLogic()
+  }
+
+  ngOnChanges() {
+    if(this.transactionData){
+      this.transactionForm.patchValue({
+        amount: this.transactionData.amount,
+        type: (this.transactionData.type === TransactionType.INCOME)?'income':
+            (this.transactionData.type === TransactionType.EXPENSE)?'expense': 'payment',
+        subAccountId: this.transactionData.subAccount?.id,
+        method: (this.transactionData.isCreditCard)?'credito':'debito',
+        concept: this.transactionData.concept,
+        date: new Date(this.transactionData.transactionDate),
+        description: this.transactionData.description
+      });
+    } else {
+      this.transactionForm.reset({
+        type: 'expense',
+        method: 'debito',
+        date: new Date()
+      });
+    }
   }
 
   public transactionForm: FormGroup = this.fb.group({
@@ -120,24 +142,43 @@ export class TransactionModal implements OnInit{
 
 
     if(this.transactionForm.valid) {
-      //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
-      this.transactionService.createTransaction(payload as any).subscribe({
-        next:() => {
-          this.isVisibleChange.emit(false);
-          this.transactionSaved.emit(true);
-          //recargamps para actualizar los saldos visuales
-          this.transactionForm.reset({
-            type: 'expense',
-            method: 'debito',
-            date: new Date()
-          });
-          this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
-        }, error: (err) => {
-          //BORRAR CONSOLE.LOG PARA PRODUCCION
-          console.error('Error al guardar en NestJS:', err);
-          this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
-        }
-      });
+      if(this.transactionData?.id){
+        this.transactionService.updateTransaction(this.transactionData.id, payload).subscribe({
+          next:()=>{
+            this.isVisibleChange.emit(false);
+            this.transactionSaved.emit(true);
+            this.transactionForm.reset({
+              type: 'expense',
+              method: 'debito',
+              date: new Date()
+            });
+            this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
+          }, error: (err) => {
+            //BORRAR CONSOLE.LOG PARA PRODUCCION
+            console.error('Error al guardar en NestJS:', err);
+            this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
+          }
+        })
+      } else {
+        //usamos as any porque nuestro DTO del frontend no hace match al 100 con el del backend al momento de crear
+        this.transactionService.createTransaction(payload as any).subscribe({
+          next:() => {
+            this.isVisibleChange.emit(false);
+            this.transactionSaved.emit(true);
+            //recargamps para actualizar los saldos visuales
+            this.transactionForm.reset({
+              type: 'expense',
+              method: 'debito',
+              date: new Date()
+            });
+            this.messageService.add({ severity: 'success', summary: 'Transaccion Completada', detail: 'Status: verified' });
+          }, error: (err) => {
+            //BORRAR CONSOLE.LOG PARA PRODUCCION
+            console.error('Error al guardar en NestJS:', err);
+            this.messageService.add({ severity: 'error', summary: 'Fallo en la transaccion', detail: 'Desc: Autorizacion denegada' });
+          }
+        });
+      }
     } else {
       //BORRAR CONSOLE.LOG PARA PRODUCCION
       console.warn("Formulario inválido, abortando envío.");

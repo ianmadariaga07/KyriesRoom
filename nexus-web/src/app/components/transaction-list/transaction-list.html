@@ -61,7 +61,7 @@
         Nueva Subcuenta/Usuario
       </button>
       <!-- boton nueva transaccion -->
-      <button (click)="isTransactionVisible.set(true)" class="bg-transparent border border-primary text-primary text-sm px-5 py-2.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 flex items-center gap-2">
+      <button (click)="isTransactionVisible.set(true);isTransactionEdit.set(null)" class="bg-transparent border border-primary text-primary text-sm px-5 py-2.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 flex items-center gap-2">
         <span class="material-symbols-outlined" style="font-size: 18px;">add</span>
         Nueva Transacción
       </button>
@@ -243,7 +243,7 @@
               </td>
               <!-- acciones -->
               <td class="px-6 py-4 whitespace-nowrap text-center">
-                <button class="bg-transparent border border-primary text-primary text-sm px-3 py-1.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 inline-flex items-center gap-2">
+                <button type="button" (click)="editTransaction(tx)" class="bg-transparent border border-primary text-primary text-sm px-3 py-1.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 inline-flex items-center gap-2">
                   <span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
                 </button>
                 <button class="bg-transparent border border-primary text-primary text-sm px-3 py-1.5 rounded shadow-sm hover:bg-primary/10 transition-all ml-2 inline-flex items-center gap-2">
@@ -284,7 +284,7 @@
           <span class="font-bold text-on-surface text-sm tracking-wide">{{ message.summary }}</span>
           <span class="text-xs text-on-surface-variant">{{ message.detail }}</span>
         </div>
-        <button (click)="closeFn()" class="text-on-surface-variant hover:text-white transition-colors p-1 rounded-full hover:bg-surface-variant flex items-center justify-center w-6 h-6 outline-none ml-auto">
+        <button (click)="closeFn($event)" class="text-on-surface-variant hover:text-white transition-colors p-1 rounded-full hover:bg-surface-variant flex items-center justify-center w-6 h-6 outline-none ml-auto">
           <span class="material-symbols-outlined text-sm">close</span>
         </button>
       </div>
@@ -303,6 +303,7 @@
       -->
   <app-transaction-modal
     [(isVisible)]="isTransactionVisible"
+    [transactionData]="isTransactionEdit()"
     [subAccountList]="subAccounts()"
     (transactionSaved)="loadTransactions();loadSubAccounts()">
   </app-transaction-modal>

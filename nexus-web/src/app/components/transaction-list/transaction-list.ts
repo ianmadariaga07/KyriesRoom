@@ -37,6 +37,7 @@ export class TransactionList implements OnInit {
   public isTransactionVisible = signal<boolean>(false);
   public isTransactionDelete = signal<boolean>(false);
   public isSubAccountModalVisible = signal<boolean>(false);
+  public isTransactionEdit = signal<Transaction | null>(null);
   public idDelete: string = '';
 
   //quitamos el constructor y utilizamos inject que es la inyeccion de dependencias moderna
@@ -83,6 +84,11 @@ export class TransactionList implements OnInit {
   public deleteTransaction(id: string) {
     this.idDelete = id;
     this.isTransactionDelete.set(true);
+  }
+
+  protected editTransaction(tx : Transaction) {
+    this.isTransactionVisible.set(true);
+    this.isTransactionEdit.set(tx);
   }
 
   public executeDelete() {
