@@ -152,15 +152,15 @@ export class TransactionModal implements OnInit, OnChanges {
   }
 
   public suscribeTransaction(payload: any) {
-    let request$: Observable<Transaction>;
+    let requestTX: Observable<Transaction>;
 
     if (this.transactionData?.id) {
-      request$ = this.transactionService.updateTransaction(this.transactionData.id, payload);
+      requestTX = this.transactionService.updateTransaction(this.transactionData.id, payload);
     } else {
-      request$ = this.transactionService.createTransaction(payload as any);
+      requestTX = this.transactionService.createTransaction(payload as any);
     }
 
-    request$.subscribe({
+    requestTX.subscribe({
       next: () => {
         this.isVisibleChange.emit(false);
         this.transactionSaved.emit(true);
