@@ -74,7 +74,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
 
       <!-- Tarjeta 1: Tarjeta Azul -->
-      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
+      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group">
         <div class="absolute right-0 top-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 transition-opacity group-hover:opacity-100 opacity-50"></div>
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-4">
@@ -97,7 +97,7 @@
       </div>
 
       <!-- Tarjeta 2: Total Real -->
-      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
+      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group">
         <div class="absolute left-0 bottom-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -ml-10 -mb-10 transition-opacity group-hover:opacity-100 opacity-50"></div>
         <div class="relative z-10">
           <div class="flex items-center justify-between mb-4">
@@ -113,7 +113,7 @@
       </div>
 
       <!-- Tarjeta 3: Total App -->
-      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group hover:border-outline transition-colors">
+      <div class="bg-surface-variant rounded-xl shadow-sm border border-outline-variant p-6 hover:border-outline transition-colors flex flex-col justify-between h-full relative overflow-hidden group">
         <div>
           <div class="flex items-center justify-between mb-4">
             <span class="text-sm text-on-surface-variant">Total App</span>
@@ -183,7 +183,7 @@
                  sortField="transactionDate"
                  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} movimientos">
           <!-- thead -->
-          <ng-template #header>
+          <ng-template>
             <tr class="bg-surface-bright border-b border-outline-variant">
               <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider">Responsable</th>
               <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider ">Concepto</th>
@@ -193,7 +193,7 @@
               <th class="text-xs text-on-surface-variant px-6 py-4 font-semibold uppercase tracking-wider text-center">Acciones</th>
             </tr>
           </ng-template>
-          <ng-template #body let-tx>
+          <ng-template let-tx>
             <tr class="hover:bg-surface-variant transition-colors group border-b border-outline-variant/50">
 
               <td class="px-6 py-4 text-on-surface-variant whitespace-nowrap">{{ tx.subAccount?.name }}</td>
