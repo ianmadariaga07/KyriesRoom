@@ -26,6 +26,9 @@ export class UsersService {
     try {
       const hashPassword = await argon2.hash(createUserDto.password);
       //con el dto limpio el repositorio crea la instancia y la guarda en memoria. Todavia no pasa a la db
+      //al usar los tres puntos (...) abrimos el objeto (createUSerDto) y le decimos que la propiedad password
+      //la cambie por hashPassword
+      //Copiamos un objeto y sobreescribimos una propiedad sin tener que ir linea por linea
       const user = this.userRepository.create({
         ...createUserDto,
         password: hashPassword,
