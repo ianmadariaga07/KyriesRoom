@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -23,8 +24,12 @@ export class UsersService {
   //METODO CREATE
   async create(createUserDto: CreateUserDto) {
     try {
+      const hashPassword = await argon2.hash(createUserDto.password);
       //con el dto limpio el repositorio crea la instancia y la guarda en memoria. Todavia no pasa a la db
-      const user = this.userRepository.create(createUserDto);
+      const user = this.userRepository.create({
+        ...createUserDto,
+        password: hashPassword,
+      });
       //guardamos en la db, el repositorio conecta con docker y hace un insert. Aqui se generan los datos faltantes
       await this.userRepository.save(user);
       return user;
