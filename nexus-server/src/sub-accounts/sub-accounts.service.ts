@@ -33,9 +33,14 @@ export class SubAccountsService {
     return subAccount;
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     //Trae todas las subcuentas pero hace un join con la tabla de users
     return await this.subAccountRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
       relations: ['user'],
     });
   }
