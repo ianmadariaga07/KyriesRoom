@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { SubAccountsService } from './sub-accounts.service';
 import { CreateSubAccountDto } from './dto/create-sub-account.dto';
 import { UpdateSubAccountDto } from './dto/update-sub-account.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('sub-accounts')
 export class SubAccountsController {
   constructor(private readonly subAccountsService: SubAccountsService) {}
