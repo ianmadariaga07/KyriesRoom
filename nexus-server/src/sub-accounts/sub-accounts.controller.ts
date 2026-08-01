@@ -21,8 +21,12 @@ export class SubAccountsController {
   constructor(private readonly subAccountsService: SubAccountsService) {}
 
   @Post()
-  create(@Body() createSubAccountDto: CreateSubAccountDto) {
-    return this.subAccountsService.create(createSubAccountDto);
+  create(
+    @Body() createSubAccountDto: CreateSubAccountDto,
+    @Req() req: express.Request,
+  ) {
+    const user = req.user as { userId: string; email: string };
+    return this.subAccountsService.create(createSubAccountDto, user.userId);
   }
 
   @Get()

@@ -16,21 +16,13 @@ export class SubAccountsService {
   ) {}
 
   //si se usa un await dentro de una funcion esta debe de tener el async al inicio obligatoriamente
-  async create(createSubAccountDto: CreateSubAccountDto) {
-    const user = await this.userRepository.findOne({
-      where: { id: createSubAccountDto.userId },
-    });
-
-    if (!user) throw new NotFoundException('Usuario no encontrado');
-
+  async create(createSubAccountDto: CreateSubAccountDto, userId: string) {
+    //creamos la instancia de la subcuenta y le asignamos su dueño inmediatamente
     const subAccount = this.subAccountRepository.create({
       ...createSubAccountDto,
-      user: user,
+      user: { id: userId },
     });
-
-    await this.subAccountRepository.save(subAccount);
-
-    return subAccount;
+    return await this.subAccountRepository.save(subAccount);
   }
 
   async findAll(userId: string) {
