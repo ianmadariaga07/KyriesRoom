@@ -37,13 +37,16 @@ export class SubAccountsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
     const subAccount = await this.subAccountRepository.findOne({
-      where: { id },
+      where: { id: id, user: { id: userId } },
       relations: ['user'],
     });
+
     if (!subAccount) {
-      throw new NotFoundException('No se ha encontrado la subcuenta');
+      throw new NotFoundException(
+        'No se ha encontrado la subcuenta o no tienes acceso',
+      );
     }
     return subAccount;
   }

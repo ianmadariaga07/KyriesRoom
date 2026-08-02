@@ -34,9 +34,12 @@ export class SubAccountsController {
     const user = req.user as { userId: string; email: string };
     return this.subAccountsService.findAll(user.userId);
   }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subAccountsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: express.Request) {
+    const user = req.user as { userId: string; email: string };
+    // Pasamos el ID de la subcuenta y el ID del usuario
+    return this.subAccountsService.findOne(id, user.userId);
   }
 
   @Patch(':id')
