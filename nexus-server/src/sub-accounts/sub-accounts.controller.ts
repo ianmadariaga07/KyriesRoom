@@ -45,13 +45,16 @@ export class SubAccountsController {
   @Patch(':id')
   update(
     @Param('id') id: string,
+    @Req() req: express.Request,
     @Body() updateSubAccountDto: UpdateSubAccountDto,
   ) {
-    return this.subAccountsService.update(id, updateSubAccountDto);
+    const user = req.user as { userId: string; email: string };
+    return this.subAccountsService.update(id, updateSubAccountDto, user.userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subAccountsService.remove(id);
+  remove(@Param('id') id: string, @Req() req: express.Request) {
+    const user = req.user as { userId: string; email: string };
+    return this.subAccountsService.remove(id, user.userId);
   }
 }

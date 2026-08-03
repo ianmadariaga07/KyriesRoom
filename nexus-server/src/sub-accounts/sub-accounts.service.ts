@@ -4,15 +4,12 @@ import { UpdateSubAccountDto } from './dto/update-sub-account.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SubAccount } from './entities/sub-account.entity';
-import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class SubAccountsService {
   constructor(
     @InjectRepository(SubAccount)
     private readonly subAccountRepository: Repository<SubAccount>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
   ) {}
 
   //si se usa un await dentro de una funcion esta debe de tener el async al inicio obligatoriamente
@@ -51,15 +48,19 @@ export class SubAccountsService {
     return subAccount;
   }
 
-  async update(id: string, updateSubAccountDto: UpdateSubAccountDto) {
-    const subAccount = await this.findOne(id);
+  async update(
+    id: string,
+    updateSubAccountDto: UpdateSubAccountDto,
+    userId: string,
+  ) {
+    const subAccount = await this.findOne(id, userId);
     //combina los datos actuales con los nuevos
     const updatedSubAccount = Object.assign(subAccount, updateSubAccountDto);
     return await this.subAccountRepository.save(updatedSubAccount);
   }
 
-  async remove(id: string) {
-    const subAccount = await this.findOne(id);
+  async remove(id: string, userId: string) {
+    const subAccount = await this.findOne(id, userId);
     await this.subAccountRepository.softRemove(subAccount);
     if (!subAccount) {
       throw new NotFoundException('No se ha encontrado la subcuenta');
