@@ -61,10 +61,9 @@ export class SubAccountsService {
 
   async remove(id: string, userId: string) {
     const subAccount = await this.findOne(id, userId);
-    await this.subAccountRepository.softRemove(subAccount);
     if (!subAccount) {
       throw new NotFoundException('No se ha encontrado la subcuenta');
     }
-    return { message: 'Subcuenta eliminada logicamente' };
+    return await this.subAccountRepository.softRemove(subAccount);
   }
 }
