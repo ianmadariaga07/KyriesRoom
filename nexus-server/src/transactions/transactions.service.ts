@@ -16,7 +16,7 @@ export class TransactionsService {
     private readonly transactionRepository: Repository<Transaction>,
   ) {}
 
-  async create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto, user: string) {
     const subAccount = await this.subAccountRepository.findOne({
       where: { id: createTransactionDto.subAccountId },
     });

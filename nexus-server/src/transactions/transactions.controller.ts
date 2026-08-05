@@ -25,7 +25,8 @@ export class TransactionsController {
     @Body() createTransactionDto: CreateTransactionDto,
     @Req() req: express.Request,
   ) {
-    return this.transactionsService.create(createTransactionDto);
+    const user = req.user as { userId: string; email: string };
+    return this.transactionsService.create(createTransactionDto, user.userId);
   }
 
   @Get()
