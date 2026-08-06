@@ -39,10 +39,15 @@ export class TransactionsService {
     return transaction;
   }
 
-  findAll() {
+  findAll(userId: string) {
     //Hacemos el JOIN con la tabla subAccounts {relations: ['subAccount'],
     //Esto hace un JOIN con la tabla subAccounts}
     return this.transactionRepository.find({
+      where: {
+        subAccount: {
+          id: userId,
+        },
+      },
       relations: ['subAccount'],
       order: {
         transactionDate: 'DESC',
