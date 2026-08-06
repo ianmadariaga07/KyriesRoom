@@ -26,7 +26,7 @@ export class TransactionsService {
 
     const transaction = this.transactionRepository.create({
       ...createTransactionDto,
-      subAccount: subAccount,
+      subAccount: { id: user },
     });
 
     //LOGICA DE SALDOS
@@ -55,9 +55,9 @@ export class TransactionsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
     const transaction = await this.transactionRepository.findOne({
-      where: { id },
+      where: { id: id, subAccount: { id: userId } },
       relations: ['subAccount'],
     });
     if (!transaction) {
@@ -66,8 +66,12 @@ export class TransactionsService {
     return transaction;
   }
 
-  async update(id: string, updateTransactionDto: UpdateTransactionDto) {
-    const transaction = await this.findOne(id);
+  async update(
+    id: string,
+    updateTransactionDto: UpdateTransactionDto,
+    userId: string,
+  ) {
+    const transaction = await this.findOne(id, userId);
     const subAccount = transaction.subAccount;
 
     if (!subAccount)
@@ -100,8 +104,8 @@ export class TransactionsService {
     return await this.transactionRepository.save(updateTransaction);
   }
 
-  async remove(id: string) {
-    const transaction = await this.findOne(id);
+  async remove(id: string, userId: string) {
+    const transaction = await this.findOne(id, userId);
     const subAccount = transaction.subAccount;
 
     if (!subAccount)

@@ -37,7 +37,8 @@ export class TransactionsController {
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: express.Request) {
-    return this.transactionsService.findOne(id);
+    const user = req.user as { userId: string; email: string };
+    return this.transactionsService.findOne(id, user.userId);
   }
 
   @Patch(':id')
@@ -46,11 +47,17 @@ export class TransactionsController {
     @Req() req: express.Request,
     @Body() updateTransactionDto: UpdateTransactionDto,
   ) {
-    return this.transactionsService.update(id, updateTransactionDto);
+    const user = req.user as { userId: string; email: string };
+    return this.transactionsService.update(
+      id,
+      updateTransactionDto,
+      user.userId,
+    );
   }
 
   @Delete(':id')
   remove(@Param('id') id: string, @Req() req: express.Request) {
-    return this.transactionsService.remove(id);
+    const user = req.user as { userId: string; email: string };
+    return this.transactionsService.remove(id, user.userId);
   }
 }
