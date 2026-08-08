@@ -18,7 +18,12 @@ export class TransactionsService {
 
   async create(createTransactionDto: CreateTransactionDto, user: string) {
     const subAccount = await this.subAccountRepository.findOne({
-      where: { id: createTransactionDto.subAccountId },
+      where: {
+        id: createTransactionDto.subAccountId,
+        user: {
+          id: user,
+        },
+      },
     });
 
     if (!subAccount)
@@ -26,7 +31,7 @@ export class TransactionsService {
 
     const transaction = this.transactionRepository.create({
       ...createTransactionDto,
-      subAccount: { id: user },
+      subAccount: subAccount,
     });
 
     //LOGICA DE SALDOS
@@ -39,13 +44,13 @@ export class TransactionsService {
     return transaction;
   }
 
-  findAll(userId: string) {
+  async findAll(user: string) {
     //Hacemos el JOIN con la tabla subAccounts {relations: ['subAccount'],
     //Esto hace un JOIN con la tabla subAccounts}
     return this.transactionRepository.find({
       where: {
         subAccount: {
-          id: userId,
+          id: user,
         },
       },
       relations: ['subAccount'],
@@ -57,7 +62,14 @@ export class TransactionsService {
 
   async findOne(id: string, userId: string) {
     const transaction = await this.transactionRepository.findOne({
-      where: { id: id, subAccount: { id: userId } },
+      where: {
+        id: id,
+        subAccount: {
+          user: {
+            id: userId,
+          },
+        },
+      },
       relations: ['subAccount'],
     });
     if (!transaction) {
