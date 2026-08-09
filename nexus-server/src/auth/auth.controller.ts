@@ -35,4 +35,10 @@ export class AuthController {
 
     return { message: 'Login exitoso', userId: userValidado.id };
   }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: express.Response) {
+    res.clearCookie('access_token');
+    return { message: 'Sesión cerrada exitosamente' };
+  }
 }

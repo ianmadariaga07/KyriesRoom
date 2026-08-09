@@ -47,7 +47,7 @@ export class TransactionsService {
   async findAll(user: string) {
     //Hacemos el JOIN con la tabla subAccounts {relations: ['subAccount'],
     //Esto hace un JOIN con la tabla subAccounts}
-    return this.transactionRepository.find({
+    return await this.transactionRepository.find({
       where: {
         subAccount: {
           id: user,
