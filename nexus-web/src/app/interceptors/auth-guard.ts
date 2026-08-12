@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (hasSession) {
     return true;
   } else {
-    // Si no está logueado, lo pateamos al login
+    //Si no esta logueado, lo mandamos al login
     router.navigate(['/login']);
     return false;
   }
