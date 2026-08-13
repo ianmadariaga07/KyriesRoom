@@ -8,6 +8,7 @@ import {MessageService} from 'primeng/api';
 @Component({
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [MessageService],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -29,7 +30,7 @@ export class Login {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Inicio de Sesion Exitoso', detail: 'Status: verified' });
           //redirigimos automáticamente a la vista de transacciones
-          this.router.navigate(['/transaccions']);
+          this.router.navigate(['/transactions']);
         },
         error: () => {
           this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada'});
