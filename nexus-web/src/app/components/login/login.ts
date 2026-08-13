@@ -29,9 +29,9 @@ export class Login {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Inicio de Sesion Exitoso', detail: 'Status: verified' });
           //redirigimos automáticamente a la vista de transacciones
-          this.router.navigate(['./transaccions']);
+          this.router.navigate(['/transaccions']);
         },
-        error: (err) => {
+        error: () => {
           this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada'});
         }
       });
