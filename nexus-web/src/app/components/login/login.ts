@@ -3,11 +3,12 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth';
 import {Router} from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {MessageService} from 'primeng/api';
+import {MessageService, PrimeTemplate} from 'primeng/api';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, PrimeTemplate, Toast],
   providers: [MessageService],
   templateUrl: './login.html',
   styleUrl: './login.css',
