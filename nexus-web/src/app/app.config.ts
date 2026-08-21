@@ -6,6 +6,7 @@ import { providePrimeNG } from 'primeng/config';
 
 import Aura from '@primeuix/themes/aura';
 import {authInterceptor} from './interceptors/auth-interceptor';
+import {MessageService} from 'primeng/api';
 
 
 export const appConfig: ApplicationConfig = {
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideBrowserGlobalErrorListeners(),
+    MessageService,
     provideRouter(routes),
     providePrimeNG({
       ripple: true,
