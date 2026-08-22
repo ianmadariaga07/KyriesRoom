@@ -261,38 +261,6 @@
     </div>
   </div>
 
-  <!-- TOAST DE CONFIRMACION -->
-  <p-toast position="top-right" [pt]="{
-             root: { class: '!z-[100000]' },
-             message: { class: '!bg-transparent !shadow-none !border-none !p-0 !m-0' }
-           }">
-    <ng-template pTemplate="headless" let-message let-closeFn="closeFn">
-      <div class="flex items-start gap-4 p-4 pt-6 pb-6 mb-4 rounded-sm shadow-lg border border-l-5 bg-surface w-full md:w-96 relative overflow-hidden font-mono uppercase tracking-widest"
-           [ngClass]="{
-              'border-l-secondary border-cyan-400 shadow-cyan-800': message.severity === 'success',
-              'border-l-primary border-red-900 shadow-red-900': message.severity === 'error',
-              'border-l-yellow-500 border-yellow-700 shadow-yellow-900': message.severity === 'warn'
-           }">
-        <span class="material-symbols-outlined filled text-2xl m-2"
-              [ngClass]="{
-                 'text-secondary': message.severity === 'success',
-                 'text-primary': message.severity === 'error',
-                 'text-yellow-500': message.severity === 'warn'
-              }">
-          {{ message.severity === 'success' ? 'check_circle' : message.severity === 'error' ? 'error' : 'warning' }}
-        </span>
-        <div class="flex flex-col gap-1 flex-1">
-          <span class="font-bold text-on-surface text-sm tracking-wide">{{ message.summary }}</span>
-          <span class="text-xs text-on-surface-variant">{{ message.detail }}</span>
-        </div>
-        <button (click)="closeFn($event)" class="text-on-surface-variant hover:text-white transition-colors p-1 rounded-full hover:bg-surface-variant flex items-center justify-center w-6 h-6 outline-none ml-auto">
-          <span class="material-symbols-outlined text-sm">close</span>
-        </button>
-      </div>
-    </ng-template>
-  </p-toast>
-
-
   <!--AQUI UN SIGNAL LLEVA PARENTESIS Y EL OTRO NO POR LA DIRECCION DE LOS DATOS.
       [(isVisible)]="isTransactionVisible"
       AQUI EL SIGNAL NO LLEVA PARENTESIS PORQUE LA SINTAXIS [( )] SE REFIERE A QUE EL COMPONENTE HIJO PUEDE

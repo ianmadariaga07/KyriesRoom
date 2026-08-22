@@ -25,7 +25,7 @@ import {TransactionModal} from '../transaction-modal/transaction-modal';
     CommonModule, TableModule, DialogModule, SelectModule, DatePickerModule, ReactiveFormsModule,
     ToastModule, SubAccountModal, ConfirmDeleteTransaction, TransactionModal
   ],
-  providers: [MessageService],
+  providers: [],
   templateUrl: './transaction-list.html',
   styleUrl: './transaction-list.css',
 })
