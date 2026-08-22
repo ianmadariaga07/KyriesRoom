@@ -108,8 +108,8 @@ export class TransactionList implements OnInit {
     this.transactionService.getAllTransactions().subscribe({
         next:(data: Transaction[]) => {
           this.transactions.set(data);
-        }, error: (error) => {
-          console.error('Error:', error);
+        }, error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada' });
         }
       }
     )
@@ -119,8 +119,8 @@ export class TransactionList implements OnInit {
     this.subAccountService.getAllSubAccounts().subscribe({
       next:(data: SubAccount[]) => {
         this.subAccounts.set(data);
-      }, error: (error) => {
-        console.error('Error:', error);
+      }, error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Fallo en la operacion', detail: 'Desc: Autorizacion denegada' });
       }
     })
   }
